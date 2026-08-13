@@ -2,7 +2,7 @@
 
 This repository contains a reusable instruction system for creating and maintaining structured research projects. Copy `AGENTS.md` and the `agent/` directory into the root of a target repository, then use those instructions to initialize and operate the project.
 
-`AGENTS.md` is the core authority. It defines repository authority, project conventions, roadmap governance, module routing, and the interaction model for research work. Supporting modules cover bootstrap, repository operations, validation, node workflow, context scoping, and mathematical research.
+`AGENTS.md` is the core authority. It defines repository authority, project conventions, roadmap governance, module routing, and the interaction model for research work. Supporting modules cover bootstrap, repository operations, validation, node workflow, context scoping, mathematical research, and faithful evidence transcription.
 
 ## Intended workflow
 
@@ -71,7 +71,8 @@ agent/
 ├── validation.md
 ├── node-workflow.md
 ├── context-scoping.md
-└── mathematical-research.md
+├── mathematical-research.md
+└── transcribe-evidence.md
 ```
 
 Then use a prompt like:
@@ -112,6 +113,8 @@ After organizing the material, report what was added, where it was placed, what 
 
 ## Upload evidence for one task
 
+Use this when you are supplying an existing file or source artifact that should be organized as task evidence:
+
 ```text
 Add the supplied material as evidence for task <STABLE-ID>.
 
@@ -119,6 +122,28 @@ Keep it in the canonical Tasks/<STABLE-ID>-<slug>/ folder using an appropriate e
 
 Update the task result-dependency graph only for actual evidence or established results. Do not mark the task completed unless I explicitly ask for completion.
 ```
+
+## Transcribe specified content as task evidence
+
+Use the `transcribe-evidence.md` workflow when the useful evidence already exists in the conversation, an attachment, or another identified source and you want the model to **record it faithfully without interpreting it or advancing the task**.
+
+Specify the task and the Markdown destination. For example:
+
+```text
+Transcribe the following content as evidence for task <STABLE-ID>.
+
+Save it as:
+Tasks/<STABLE-ID>-<slug>/notes/<FILENAME>.md
+
+Content to record:
+<SPECIFIED CONTENT, OR IDENTIFIED CONTENT FROM THE CURRENT CONVERSATION / ATTACHMENT>
+
+Preserve the content faithfully in Markdown. Do not summarize, improve, correct, analyze, or strengthen it. Do not update task-graph.md, resolution.md, the roadmap, task status, history, or dictionary.md. After saving the evidence file, report its path and stop.
+```
+
+If you identify the task by stable ID but do not know its current folder slug, the model may resolve the canonical folder from the repository. If you do not supply a filename, the transcription workflow should ask you for one rather than inventing a canonical evidence filename.
+
+This workflow is useful for preserving a result reached during a guided conversation before deciding what it means for the task. Recording the content and interpreting its evidentiary consequence are intentionally separate actions.
 
 ## Define a new research task
 
@@ -229,6 +254,6 @@ Report failures and validation limitations explicitly.
 5. Add shared sources to `Background/`.
 6. Define the first bounded task through the intake conversation.
 7. Work on that task conversationally, one user-directed question or bounded block at a time.
-8. Preserve worthwhile evidence in the task folder as the conversation develops.
+8. Use the transcription workflow when you want to preserve specified conversational or source content as task-local Markdown evidence without interpreting it yet.
 9. When the task appears ready, explicitly request the completion workflow.
 10. Validate before merging structural or task-completion changes.
