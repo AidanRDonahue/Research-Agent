@@ -22,6 +22,7 @@ instructions and follow this table instead.
 | --- | --- |
 | Initialize a new research repository | `agent/bootstrap.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Define or create a research node | `agent/node-workflow.md`, `agent/context-scoping.md`; add `agent/mathematical-research.md` only if mathematical formulation is required |
+| Transcribe specified content as evidence in an existing task folder | `agent/transcribe-evidence.md`, `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Work mathematically on an existing node | `agent/mathematical-research.md`, `agent/context-scoping.md` |
 | Complete a research node | `agent/node-workflow.md`, `agent/context-scoping.md`, `agent/mathematical-research.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Change roadmap structure without creating a node | `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
@@ -33,6 +34,14 @@ modules mentioned inside another module.
 
 When an action changes category, return to this table and load only any
 newly required module.
+
+## Guided task work
+
+Working on an existing research node is a guided conversation between the user and the model. The task contract defines the research question and admissible scope; it is not an instruction to autonomously execute the entire task.
+
+During task work, address the user's current question, requested calculation, proposed argument, experiment, or other bounded step. Do not continue through later steps merely because they appear in the task method or are natural next steps. After a substantive result or decision point, state what was established, what remains uncertain, and the most relevant next options, then wait for the user's direction before pursuing another branch of the task.
+
+The model may perform the bounded reading, calculation, derivation, coding, or validation directly required to answer the user's current turn. It must not independently drive the node to resolution or mark it completed unless the user explicitly asks to evaluate, resolve, or complete the task, or otherwise clearly directs that completion work be performed.
 
 ## Project terminology and conventions
 

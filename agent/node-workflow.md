@@ -74,6 +74,22 @@ Additional task-specific evidence directories may be created when useful.
 
 Shared foundations that genuinely support multiple tasks belong in `Background/`; otherwise prefer task-local evidence.
 
+## Guided task conversation
+
+After a task has been created, working on it is normally an interactive research conversation with the user. The task's objective, method, stopping rules, and result graph define scope and record structure; they do not authorize the model to execute every listed step without further user participation.
+
+For each turn:
+
+1. respond to the specific question, idea, calculation, source, experiment, argument, or bounded action the user has supplied;
+2. perform only the supporting work needed to address that turn faithfully;
+3. distinguish what has been established from what is tentative or still open;
+4. update task-local evidence when the current turn produces an artifact or result worth preserving; and
+5. at a natural decision point, present the relevant next questions or options and wait for the user to choose the direction.
+
+Do not silently continue from one research step to the next just because the next step is obvious, listed in the task method, or likely to be useful. Do not attempt to finish the task in the background of a broader response. A user may explicitly ask for a larger bounded block of work, in which case complete that requested block, but stop when that requested scope has been satisfied.
+
+If the accumulated evidence appears sufficient for completion but the user has not asked to complete the task, say that the task may be ready for completion and ask whether they want to enter the completion workflow. Keep `resolution.md` pending until completion work is explicitly requested.
+
 ## Canonical templates
 
 `templates/` contains the canonical templates used when creating new work items.
@@ -112,6 +128,8 @@ At publication time:
 Do not renumber existing stable IDs when inserting or moving a task.
 
 ## Completing a task
+
+Enter this workflow only when the user explicitly asks to evaluate, resolve, complete, or mark the task complete, or otherwise clearly directs completion work. Do not infer a request for completion merely because the current evidence appears sufficient.
 
 Before marking a work item completed:
 

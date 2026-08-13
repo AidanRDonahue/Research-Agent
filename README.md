@@ -2,7 +2,17 @@
 
 This repository contains a reusable instruction system for creating and maintaining structured research projects. Copy `AGENTS.md` and the `agent/` directory into the root of a target repository, then use those instructions to initialize and operate the project.
 
-`AGENTS.md` is the core authority. It defines repository authority, project conventions, roadmap governance, and the routing table that determines which supporting module is read for a given action. Supporting modules cover bootstrap, repository operations, validation, node workflow, context scoping, and mathematical research.
+`AGENTS.md` is the core authority. It defines repository authority, project conventions, roadmap governance, module routing, and the interaction model for research work. Supporting modules cover bootstrap, repository operations, validation, node workflow, context scoping, mathematical research, and faithful evidence transcription.
+
+## Intended workflow
+
+The agent is designed to organize research without replacing the user's role in directing it.
+
+Creating a task establishes a bounded research contract: the question, parent, dependencies, method, stopping rules, expected evidence, and possible outcomes. **It does not tell the model to go away and finish the task autonomously.**
+
+Working on a task should be a guided conversation between the user and their model. The user chooses the current question, proposed argument, experiment, calculation, source, or direction. The model works on that bounded step, explains what was established and what remains open, and then stops at a natural decision point so the user can choose what to do next.
+
+The model may suggest useful next steps, but it should not silently execute them. If the evidence appears sufficient to complete a task, the model should say so and ask whether the user wants to enter the completion workflow. A task should only be completed when the user explicitly asks to evaluate, resolve, or complete it.
 
 ## What this agent manages
 
@@ -27,23 +37,15 @@ Prepare as much of the following as is known. Leave unknown items explicitly und
 
 ### Project identity
 
-Provide:
-
-- repository owner or organization
-- repository name
-- project title
-- concise purpose statement
-- project scope and exclusions
-
-These replace generic placeholders such as `<OWNER>/<REPOSITORY>`.
+Provide the repository owner or organization, repository name, project title, concise purpose statement, project scope, and exclusions.
 
 ### Project orientation
 
-Describe the research problem or program, intended outputs, expected artifact types, and the working procedure you want contributors to follow.
+Describe the research problem or program, intended outputs, expected artifact types, and the working procedure contributors should follow.
 
 ### Terminology and conventions
 
-Provide domain-specific terminology, definitions, notation, naming rules, units, sign conventions, indexing conventions, normalization rules, and any other conventions that must remain stable. These should become the basis of `dictionary.md`.
+Provide domain-specific terminology, definitions, notation, naming rules, units, sign conventions, indexing conventions, normalization rules, and other conventions that must remain stable. These become the basis of `dictionary.md`.
 
 ### Initial research state
 
@@ -55,7 +57,7 @@ Identify specifications, publications, prior work, accepted assumptions, referen
 
 ### Repository-specific constraints
 
-Provide any required CI commands, tests, linting or formatting commands, branch-protection rules, generated files, preserved directories, validators, or structural requirements.
+Provide required CI commands, tests, linting or formatting commands, branch-protection rules, generated files, preserved directories, validators, or structural requirements.
 
 ## Instantiate a new project
 
@@ -69,10 +71,11 @@ agent/
 ├── validation.md
 ├── node-workflow.md
 ├── context-scoping.md
-└── mathematical-research.md
+├── mathematical-research.md
+└── transcribe-evidence.md
 ```
 
-Then use a prompt like this:
+Then use a prompt like:
 
 ```text
 Initialize this repository as a research project using AGENTS.md.
@@ -100,8 +103,6 @@ For an empty repository, the minimum useful inputs are repository identity, proj
 
 ## Upload shared background information
 
-Use this prompt when material should support multiple research tasks:
-
 ```text
 Add the supplied files and sources as background material for this project.
 
@@ -112,15 +113,37 @@ After organizing the material, report what was added, where it was placed, what 
 
 ## Upload evidence for one task
 
-Use this prompt when material belongs to a specific node:
+Use this when you are supplying an existing file or source artifact that should be organized as task evidence:
 
 ```text
 Add the supplied material as evidence for task <STABLE-ID>.
 
 Keep it in the canonical Tasks/<STABLE-ID>-<slug>/ folder using an appropriate evidence subdirectory such as notes/, data/, experiments/, scripts/, or references/. Treat it as task-specific unless there is a clear reason it is a shared foundation.
 
-Update the task result-dependency graph only for actual evidence or established results. Do not mark the task completed unless the completion requirements are satisfied.
+Update the task result-dependency graph only for actual evidence or established results. Do not mark the task completed unless I explicitly ask for completion.
 ```
+
+## Transcribe specified content as task evidence
+
+Use the `transcribe-evidence.md` workflow when the useful evidence already exists in the conversation, an attachment, or another identified source and you want the model to **record it faithfully without interpreting it or advancing the task**.
+
+Specify the task and the Markdown destination. For example:
+
+```text
+Transcribe the following content as evidence for task <STABLE-ID>.
+
+Save it as:
+Tasks/<STABLE-ID>-<slug>/notes/<FILENAME>.md
+
+Content to record:
+<SPECIFIED CONTENT, OR IDENTIFIED CONTENT FROM THE CURRENT CONVERSATION / ATTACHMENT>
+
+Preserve the content faithfully in Markdown. Do not summarize, improve, correct, analyze, or strengthen it. Do not update task-graph.md, resolution.md, the roadmap, task status, history, or dictionary.md. After saving the evidence file, report its path and stop.
+```
+
+If you identify the task by stable ID but do not know its current folder slug, the model may resolve the canonical folder from the repository. If you do not supply a filename, the transcription workflow should ask you for one rather than inventing a canonical evidence filename.
+
+This workflow is useful for preserving a result reached during a guided conversation before deciding what it means for the task. Recording the content and interpreting its evidentiary consequence are intentionally separate actions.
 
 ## Define a new research task
 
@@ -131,7 +154,40 @@ Define a new research task for this project. The broad goal is:
 Use the current roadmap, dictionary, dependencies, and existing evidence as authority. Follow the task-intake workflow in AGENTS.md and the routed node instructions. Do not publish the task until the required intake information is complete.
 ```
 
-The workflow will establish the action-oriented title, parent, relation to parent, uncertainty reduced, dependencies, bounded method, stopping rules, outcome branches, scope exclusions, assumptions, conventions, validation, and planned result-dependency graph.
+The task-intake conversation establishes the action-oriented title, parent, relation to parent, uncertainty reduced, dependencies, bounded method, stopping rules, outcome branches, exclusions, assumptions, conventions, validation, and planned result-dependency graph.
+
+## Start or continue work on an existing task
+
+This is the normal research workflow. Use a prompt like:
+
+```text
+Work with me on research task <STABLE-ID> as a guided conversation.
+
+For this turn, I want to focus on:
+<CURRENT QUESTION, ARGUMENT, CALCULATION, EXPERIMENT, SOURCE, OR DECISION>
+
+Address this bounded step using the task's permitted context. Explain what we establish, what remains uncertain, and the most relevant next options. Do not continue into later task steps or try to finish the task unless I explicitly direct you to do so.
+```
+
+You do not need to restate the whole task each turn. Once the task is established, subsequent prompts can simply continue the discussion, for example:
+
+```text
+Let's test the second assumption first. What fails if <ASSUMPTION> is removed?
+```
+
+or:
+
+```text
+Before we prove that lemma, compare these two possible approaches and tell me what each would require.
+```
+
+or:
+
+```text
+Use the attached paper only to check whether it supports the claim we just made. Don't advance the rest of the task yet.
+```
+
+The model should treat each of these as a bounded conversational step, not permission to execute the rest of the task method.
 
 ## Import existing research work
 
@@ -144,10 +200,6 @@ Identify any historical state that cannot be reconstructed reliably from the ava
 ```
 
 ## Change project structure
-
-Canonical governance locations must not be replaced by parallel conventions. Project-specific extensions are allowed when they do not displace the responsibilities of `AGENTS.md`, `agent/`, `dictionary.md`, `roadmap.yaml`, `ROADMAP.md`, `Tasks/`, `Background/`, `templates/`, `history/`, or `checks/`.
-
-Use:
 
 ```text
 Modify the project structure to support this need:
@@ -171,18 +223,9 @@ Change the roadmap structure as follows:
 Do not create a new research node unless required. Preserve stable IDs, verify parent and dependency acyclicity, update display indices when applicable, synchronize roadmap.yaml and ROADMAP.md, preserve direct Mermaid-node links to task folders, and validate the result.
 ```
 
-## Work on an existing task
-
-```text
-Work on research task <STABLE-ID>.
-
-Objective for this session:
-<WHAT TO ESTABLISH, TEST, DERIVE, IMPLEMENT, OR ANALYZE>
-
-Use only the task's permitted semantic context under AGENTS.md. Distinguish established facts, cited results, derivations, experiments, numerical evidence, heuristics, and conjectures. Add new task-specific evidence to the canonical task folder and keep its evidence graph synchronized.
-```
-
 ## Complete a task
+
+Completion is an explicit workflow, separate from ordinary task conversation. Use:
 
 ```text
 Evaluate task <STABLE-ID> for completion and complete it if the repository evidence supports doing so.
@@ -208,9 +251,9 @@ Report failures and validation limitations explicitly.
 2. Supply project identity, purpose, scope, terminology, initial state, and repository-specific constraints.
 3. Run the initialization prompt.
 4. Review the generated project `README.md`, `dictionary.md`, roadmap, templates, and validation checklist.
-5. Add shared sources to `Background/` with the background-information prompt.
-6. Define the first bounded task using the task-intake workflow.
-7. Work by stable task ID and keep task evidence inside its canonical folder.
-8. Complete tasks only when their evidence and validation requirements are satisfied.
-9. Use structural-change prompts instead of creating parallel project conventions manually.
+5. Add shared sources to `Background/`.
+6. Define the first bounded task through the intake conversation.
+7. Work on that task conversationally, one user-directed question or bounded block at a time.
+8. Use the transcription workflow when you want to preserve specified conversational or source content as task-local Markdown evidence without interpreting it yet.
+9. When the task appears ready, explicitly request the completion workflow.
 10. Validate before merging structural or task-completion changes.

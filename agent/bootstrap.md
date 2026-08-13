@@ -27,7 +27,8 @@ The project must use the following top-level structure. These paths and responsi
 │   ├── validation.md
 │   ├── node-workflow.md
 │   ├── context-scoping.md
-│   └── mathematical-research.md
+│   ├── mathematical-research.md
+│   └── transcribe-evidence.md
 │
 ├── dictionary.md
 │   └── Canonical project vocabulary
