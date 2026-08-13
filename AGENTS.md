@@ -22,6 +22,7 @@ instructions and follow this table instead.
 | --- | --- |
 | Initialize a new research repository | `agent/bootstrap.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Define or create a research node | `agent/node-workflow.md`, `agent/context-scoping.md`; add `agent/mathematical-research.md` only if mathematical formulation is required |
+| Transcribe specified content as evidence in an existing task folder | `agent/transcribe-evidence.md`, `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Work mathematically on an existing node | `agent/mathematical-research.md`, `agent/context-scoping.md` |
 | Complete a research node | `agent/node-workflow.md`, `agent/context-scoping.md`, `agent/mathematical-research.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Change roadmap structure without creating a node | `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
