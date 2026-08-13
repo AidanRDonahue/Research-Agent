@@ -1,18 +1,67 @@
 # Research Organization Agent
 
-This repository contains a reusable instruction system for creating and maintaining structured research projects. Copy `AGENTS.md` and the `agent/` directory into the root of a target repository, then use those instructions to initialize and operate the project.
+**This agent is designed for guided research on long, complex questions.** Its primary purpose is to help a user and a language model stay on-track across research that is too large, branching, technical, or evidence-heavy to answer reliably in a single prompt or a single uninterrupted model response.
 
-`AGENTS.md` is the core authority. It defines repository authority, project conventions, roadmap governance, module routing, and the interaction model for research work. Supporting modules cover bootstrap, repository operations, validation, node workflow, context scoping, mathematical research, and faithful evidence transcription.
+Long research problems create a predictable failure mode for models: the model may lose the original question, silently change assumptions, skip unresolved dependencies, mix evidence with conjecture, follow an attractive side path, or try to finish the whole problem before the user has had a chance to inspect and redirect the reasoning. This agent provides a persistent project structure and a guided conversational workflow intended to reduce those failures.
 
-## Intended workflow
+Instead of asking the model to solve a large question all at once, the project is organized into bounded research tasks. The user then works through those tasks **with the model, one deliberate step at a time**. The repository preserves the question, dependencies, terminology, evidence, intermediate results, unresolved issues, and task state so each conversation can remain anchored to the actual research program.
 
-The agent is designed to organize research without replacing the user's role in directing it.
+The goal is not autonomous research. The goal is **disciplined, user-directed research over many turns**, where the model can do substantial reasoning, calculation, coding, source analysis, or experimentation while the user retains control over what question is being pursued and what happens next.
 
-Creating a task establishes a bounded research contract: the question, parent, dependencies, method, stopping rules, expected evidence, and possible outcomes. **It does not tell the model to go away and finish the task autonomously.**
+Copy `AGENTS.md` and the `agent/` directory into the root of a target repository to instantiate this workflow. `AGENTS.md` is the core authority. It defines repository authority, project conventions, roadmap governance, module routing, and the interaction model for research work. Supporting modules cover bootstrap, repository operations, validation, node workflow, context scoping, mathematical research, and faithful evidence transcription.
 
-Working on a task should be a guided conversation between the user and their model. The user chooses the current question, proposed argument, experiment, calculation, source, or direction. The model works on that bounded step, explains what was established and what remains open, and then stops at a natural decision point so the user can choose what to do next.
+## Why use this agent?
 
-The model may suggest useful next steps, but it should not silently execute them. If the evidence appears sufficient to complete a task, the model should say so and ask whether the user wants to enter the completion workflow. A task should only be completed when the user explicitly asks to evaluate, resolve, or complete it.
+Use this agent when the research question is large enough that maintaining continuity and discipline across many model turns matters as much as producing any one answer.
+
+It is especially useful when:
+
+- the main question must be decomposed into dependent subquestions;
+- reasoning will unfold across many conversations or sessions;
+- assumptions, definitions, notation, or conventions must remain stable;
+- multiple evidence files, calculations, experiments, or sources need to be connected without losing provenance;
+- a model is likely to drift into adjacent questions or prematurely synthesize an answer;
+- negative, partial, or inconclusive results need to remain visible rather than being smoothed over;
+- the user wants to inspect and redirect the research process at meaningful decision points; or
+- the eventual answer must be reconstructible from an explicit chain of evidence rather than from model memory alone.
+
+The repository acts as persistent research memory, while the task workflow acts as a **scope-control mechanism for the model**. Each task tells the model what problem is currently admissible, which prior results may be used, what evidence belongs to the task, and what remains unresolved. The user decides which part of that bounded problem to work on next.
+
+## Intended workflow: guided research, not autonomous completion
+
+Creating a task establishes a bounded research contract: the question, parent, dependencies, method, stopping rules, expected evidence, and possible outcomes. **It does not tell the model to go away and finish the task autonomously.** A task is a container for a continuing research conversation.
+
+Working on a task should be a guided conversation between the user and their model. The user chooses the current question, proposed argument, experiment, calculation, source, or direction. The model works deeply on that bounded step, explains what was established and what remains open, and then stops at a natural decision point so the user can inspect the result and decide what to do next.
+
+This interaction pattern is central to the agent. For a difficult question, the expected sequence is not:
+
+```text
+User gives task -> model attempts entire task -> model produces final answer
+```
+
+Instead, the expected sequence is closer to:
+
+```text
+User and model define a bounded task
+        ↓
+User chooses the next question or research step
+        ↓
+Model works on that step using the permitted context
+        ↓
+Result or evidence is inspected and, when useful, preserved
+        ↓
+Model states what is established and what remains open
+        ↓
+User chooses the next direction
+        ↓
+...repeat as needed...
+        ↓
+User explicitly requests task completion when the evidence is ready
+```
+
+The model may suggest useful next steps, but it should not silently execute them. It should not treat a task's method, dependency graph, or apparent next proof step as permission to run ahead. If the evidence appears sufficient to complete a task, the model should say so and wait for the user to explicitly request the completion workflow.
+
+This is how the agent is intended to keep models on-track while answering long, complex questions: **scope is made explicit, evidence is persisted, unresolved questions remain visible, and the user repeatedly re-authorizes the next research step.**
 
 ## What this agent manages
 
@@ -78,7 +127,9 @@ agent/
 Then use a prompt like:
 
 ```text
-Initialize this repository as a research project using AGENTS.md.
+Initialize this repository as a guided research project using AGENTS.md.
+
+This project will be used to work through a long or complex research question over multiple user-directed conversations. Preserve the project state so the model can remain anchored to the current question, dependencies, evidence, and unresolved issues rather than attempting to solve the whole research program at once.
 
 Repository: <OWNER>/<REPOSITORY>
 Project title: <PROJECT TITLE>
@@ -158,7 +209,7 @@ The task-intake conversation establishes the action-oriented title, parent, rela
 
 ## Start or continue work on an existing task
 
-This is the normal research workflow. Use a prompt like:
+This is the normal research workflow and the main way the agent should be used. Use a prompt like:
 
 ```text
 Work with me on research task <STABLE-ID> as a guided conversation.
@@ -169,7 +220,7 @@ For this turn, I want to focus on:
 Address this bounded step using the task's permitted context. Explain what we establish, what remains uncertain, and the most relevant next options. Do not continue into later task steps or try to finish the task unless I explicitly direct you to do so.
 ```
 
-You do not need to restate the whole task each turn. Once the task is established, subsequent prompts can simply continue the discussion, for example:
+You do not need to restate the whole task each turn. The repository exists precisely so a long research effort can maintain continuity without forcing the user to reprompt the entire problem. Once the task is established, subsequent prompts can simply continue the discussion, for example:
 
 ```text
 Let's test the second assumption first. What fails if <ASSUMPTION> is removed?
@@ -188,6 +239,8 @@ Use the attached paper only to check whether it supports the claim we just made.
 ```
 
 The model should treat each of these as a bounded conversational step, not permission to execute the rest of the task method.
+
+For especially long or difficult tasks, regularly preserve important intermediate results as task evidence. This gives later conversations a concrete record to work from and reduces dependence on the model remembering an extended discussion correctly.
 
 ## Import existing research work
 
@@ -254,6 +307,6 @@ Report failures and validation limitations explicitly.
 5. Add shared sources to `Background/`.
 6. Define the first bounded task through the intake conversation.
 7. Work on that task conversationally, one user-directed question or bounded block at a time.
-8. Use the transcription workflow when you want to preserve specified conversational or source content as task-local Markdown evidence without interpreting it yet.
+8. Preserve important intermediate results and source material as task-local evidence so later turns remain anchored to the research record.
 9. When the task appears ready, explicitly request the completion workflow.
 10. Validate before merging structural or task-completion changes.
