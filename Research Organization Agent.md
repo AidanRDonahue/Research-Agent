@@ -30,7 +30,7 @@ When mathematical Markdown is used, prefer GitHub's backtick-delimited inline fo
 
 `roadmap.yaml` is the canonical structured roadmap and project-state source. `ROADMAP.md` is its human-readable or visual projection.
 
-Stable IDs use the repository-defined format, such as `A01`, `A02`, and so on. They are allocated monotonically, are never reused, and do not encode hierarchy or topic. `display_index`, when used, is the mutable hierarchical front-facing index. Every non-root work item has exactly one conceptual parent. Dependencies are prerequisite information flow; cross-links are non-parent relationships. Parent and dependency graphs must be acyclic.
+Stable IDs use the repository-defined format, such as `T001`, `T002`, and so on. They are allocated monotonically, are never reused, and do not encode hierarchy or topic. `display_index`, when used, is the mutable hierarchical front-facing index. Every non-root work item has exactly one conceptual parent. Dependencies are prerequisite information flow; cross-links are non-parent relationships. Parent and dependency graphs must be acyclic.
 
 `ROADMAP.md` must represent roadmap work items as Mermaid nodes. Each Mermaid task node itself must be a hyperlink to that work item's canonical `Tasks/<STABLE-ID>-<short-title>/` folder, using Mermaid link/click syntax supported by GitHub. Do not rely on a separate Markdown task-link list as the canonical navigation mechanism when the nodes can carry the links directly.
 
