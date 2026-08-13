@@ -89,7 +89,7 @@ The project must use the following top-level structure. These paths and responsi
 │   ├── README.md
 │   │   └── Defines the work-item folder convention
 │   │
-│   ├── A01-<short-title>/
+│   ├── T001-<short-title>/
 │   │   ├── task-graph.md
 │   │   │   └── contract + internal dependency/result graph
 │   │   │
@@ -105,7 +105,7 @@ The project must use the following top-level structure. These paths and responsi
 │   │       ├── references/
 │   │       └── other task-specific evidence
 │   │
-│   ├── A02-<short-title>/
+│   ├── T002-<short-title>/
 │   │   ├── task-graph.md
 │   │   ├── resolution.md
 │   │   └── ...
@@ -158,7 +158,7 @@ Tasks/<STABLE-ID>-<short-title>/
 
 The folder name begins with the stable ID. `Tasks/README.md` defines the repository-wide work-item folder convention and must remain consistent with this file.
 
-Do not create new single-file task contracts such as `Tasks/A08-title.md`, and do not create a separate task-resolution directory or parallel task-storage convention for new work.
+Do not create new single-file task contracts such as `Tasks/T008-title.md`, and do not create a separate task-resolution directory or parallel task-storage convention for new work.
 
 ### `task-graph.md`
 
