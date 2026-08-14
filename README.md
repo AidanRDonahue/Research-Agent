@@ -10,6 +10,79 @@ The goal is not autonomous research. The goal is **disciplined, user-directed re
 
 Copy `AGENTS.md` and the `agent/` directory into the root of a target repository to instantiate this workflow. `AGENTS.md` is the core authority. It defines repository authority, project conventions, roadmap governance, module routing, and the interaction model for research work. Supporting modules cover bootstrap, repository operations, validation, node workflow, context scoping, mathematical research, and faithful evidence transcription.
 
+## Quick start: conversational prompts
+
+You do not need to fill out a large template before using the agent. A normal first-use sequence can be driven by a few short prompts with placeholders for your own project.
+
+### 1. Initialize the project
+
+A concise initialization prompt is:
+
+```text
+Use this agent (<RESEARCH-AGENT URL>) to build a project around the question:
+"<ROOT RESEARCH QUESTION>"
+
+Instantiate the project in <OWNER>/<REPOSITORY>, using <SUPPLIED PAPER / NOTES / SOURCES> as background. Follow all mandates in the agent documents and copy the agent into the project.
+```
+
+If there is no initial background source, omit that clause. The important pieces are the governing agent, target repository, and root research question. Additional scope, terminology, and validation constraints can be supplied when they are already known.
+
+### 2. Ask for a useful first branch
+
+Once `T001` has been created, a user can simply ask:
+
+```text
+What is a good starting point for branching from this task?
+```
+
+or more explicitly:
+
+```text
+Given T001, what would be a useful first bounded research direction?
+```
+
+The model may suggest a branch, but the suggestion is not yet a task.
+
+### 3. Define the task through conversation
+
+If a suggested direction looks useful, continue with:
+
+```text
+Yes, let's do that by starting a conversation. Ask me questions.
+```
+
+The task-intake workflow should then narrow the idea one item at a time. The user can answer naturally rather than writing a formal task contract. Useful answers often sound like:
+
+```text
+Let's focus on <SPECIFIC OBJECT / CASE / METHOD>.
+```
+
+```text
+Start with <BASELINE OR SPECIAL CASE>, then generalize.
+```
+
+```text
+Keep this task limited to <IN-SCOPE DIRECTION> and leave <OUT-OF-SCOPE DIRECTION> for later.
+```
+
+```text
+I want a proof whenever we claim that <CLASSIFICATION / CORRESPONDENCE / EXTENSION> is correct.
+```
+
+The agent is responsible for turning those ordinary research decisions into the required task metadata, scope, method, stopping rules, outcome branches, assumptions, validation, and evidence graph.
+
+### 4. Publish the task when the scope is settled
+
+When the conversation has reached a precise bounded target, the user can say:
+
+```text
+Sounds good. Read AGENTS.md and create a new task investigating that setting.
+```
+
+The agent should then follow the repository's node-creation workflow, create the canonical task folder, keep the resolution pending, synchronize the roadmap, validate the change, and publish it through the repository workflow.
+
+See [`Getting-Started.md`](Getting-Started.md) for a complete example of this conversational narrowing process using a deliberately generic mathematical question.
+
 ## Why use this agent?
 
 Use this agent when the research question is large enough that maintaining continuity and discipline across many model turns matters as much as producing any one answer.
@@ -82,7 +155,7 @@ Task-specific evidence belongs in the corresponding `Tasks/<STABLE-ID>-<slug>/` 
 
 ## Information to provide before initialization
 
-Prepare as much of the following as is known. Leave unknown items explicitly undecided rather than guessing.
+Prepare as much of the following as is known. Leave unknown items explicitly undecided rather than guessing. The concise initialization prompt above is enough to get started when most of these details are not known yet.
 
 ### Project identity
 
@@ -124,7 +197,16 @@ agent/
 └── transcribe-evidence.md
 ```
 
-Then use a prompt like:
+For most new projects, the concise prompt from the quick-start section is enough:
+
+```text
+Use this agent (<RESEARCH-AGENT URL>) to build a project around the question:
+"<ROOT RESEARCH QUESTION>"
+
+Instantiate the project in <OWNER>/<REPOSITORY>, using <BACKGROUND MATERIAL> as background. Follow all mandates in the agent documents and copy the agent into the project.
+```
+
+If you want to specify the project structure and constraints in more detail up front, use the expanded form below:
 
 ```text
 Initialize this repository as a guided research project using AGENTS.md.
@@ -150,7 +232,7 @@ Repository-specific validation:
 Preserve existing project-specific artifacts that do not conflict with the canonical project system. Do not invent missing research results. Create the required project structure, validate it, and report unresolved decisions or missing inputs.
 ```
 
-For an empty repository, the minimum useful inputs are repository identity, project title, purpose, scope, and a root objective.
+For an empty repository, the minimum useful inputs are repository identity, a root research question or objective, and enough context to describe the project purpose. Scope and other details can remain undecided until the guided conversation makes them necessary.
 
 ## Upload shared background information
 
@@ -198,6 +280,26 @@ This workflow is useful for preserving a result reached during a guided conversa
 
 ## Define a new research task
 
+A natural way to define the first child of `T001` is conversational rather than form-driven:
+
+```text
+What is a good starting point for branching from this task?
+```
+
+After choosing a promising direction:
+
+```text
+Yes, let's do that by starting a conversation. Ask me questions.
+```
+
+Answer the intake questions normally until the target, scope, assumptions, proof/evidence standard, and stopping point are clear. Then publish the result with:
+
+```text
+Sounds good. Read AGENTS.md and create a new task investigating that setting.
+```
+
+You can also initiate intake directly with a more explicit prompt:
+
 ```text
 Define a new research task for this project. The broad goal is:
 <DESCRIBE THE RESEARCH QUESTION OR ACTION>
@@ -205,7 +307,7 @@ Define a new research task for this project. The broad goal is:
 Use the current roadmap, dictionary, dependencies, and existing evidence as authority. Follow the task-intake workflow in AGENTS.md and the routed node instructions. Do not publish the task until the required intake information is complete.
 ```
 
-The task-intake conversation establishes the action-oriented title, parent, relation to parent, uncertainty reduced, dependencies, bounded method, stopping rules, outcome branches, exclusions, assumptions, conventions, validation, and planned result-dependency graph.
+The task-intake conversation establishes the action-oriented title, parent, relation to parent, uncertainty reduced, dependencies, bounded method, stopping rules, outcome branches, exclusions, assumptions, conventions, validation, and planned result-dependency graph. The user does not need to supply all of those fields directly; the agent should derive them from the guided conversation without inventing research decisions the user has not made.
 
 ## Start or continue work on an existing task
 
@@ -300,13 +402,13 @@ Report failures and validation limitations explicitly.
 
 ## Recommended first-use sequence
 
-1. Copy `AGENTS.md` and `agent/` into the target repository.
-2. Supply project identity, purpose, scope, terminology, initial state, and repository-specific constraints.
-3. Run the initialization prompt.
+1. Copy `AGENTS.md` and `agent/` into the target repository, or direct the model to copy them as part of initialization when it has repository access.
+2. Give the model the target repository and root research question, plus any background sources already available.
+3. Run the concise initialization prompt or the expanded form when you need tighter control over project metadata.
 4. Review the generated project `README.md`, `dictionary.md`, roadmap, templates, and validation checklist.
-5. Add shared sources to `Background/`.
-6. Define the first bounded task through the intake conversation.
-7. Work on that task conversationally, one user-directed question or bounded block at a time.
-8. Preserve important intermediate results and source material as task-local evidence so later turns remain anchored to the research record.
-9. When the task appears ready, explicitly request the completion workflow.
-10. Validate before merging structural or task-completion changes.
+5. Add additional shared sources to `Background/` as needed.
+6. Ask for a good first branch from `T001`, then tell the agent to start a conversation and ask questions.
+7. Answer the task-intake questions naturally until the bounded target and research standard are clear, then explicitly ask the agent to create the task.
+8. Work on that task conversationally, one user-directed question or bounded block at a time.
+9. Preserve important intermediate results and source material as task-local evidence so later turns remain anchored to the research record.
+10. When the task appears ready, explicitly request the completion workflow and validate before merging structural or task-completion changes.
