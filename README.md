@@ -76,7 +76,7 @@ The agent is responsible for turning those ordinary research decisions into the 
 When the conversation has reached a precise bounded target, the user can say:
 
 ```text
-Sounds good. Read AGENTS.md and create a new task investigating that setting.
+Sounds good. Let's create a new task investigating that setting.
 ```
 
 The agent should then follow the repository's node-creation workflow, create the canonical task folder, keep the resolution pending, synchronize the roadmap, validate the change, and publish it through the repository workflow.
