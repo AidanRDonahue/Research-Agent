@@ -193,3 +193,66 @@ The user does not need to formulate the task in formal research language. Normal
 > “Yes, that seems like a good first task.”
 
 The agent’s role is to turn those ordinary mathematical choices into a rigorous, bounded task contract while preserving the user’s actual research direction.
+
+---
+
+# Example Roadmap After Several Research Conversations
+
+The first child task does not need to determine the entire future roadmap. New nodes should normally be created only when a later conversation identifies a concrete bounded question. Over time, however, a project asking
+
+> **How many groups of order `n` are there up to isomorphism?**
+
+might grow into a roadmap like the following.
+
+This is only an illustrative roadmap. `T001` and `T002` match the example developed above; the later nodes are hypothetical examples of branches that could be added after separate task-intake conversations.
+
+```mermaid
+flowchart TD
+    T001["T001 · 1 · Determine the number of groups of order n up to isomorphism"]
+
+    T002["T002 · 1.1 · Classify groups of order pq for distinct primes"]
+    T003["T003 · 1.2 · Count finite abelian groups of order n"]
+    T004["T004 · 1.3 · Investigate groups of prime-power order"]
+    T005["T005 · 1.3.1 · Classify groups of order p^2"]
+    T006["T006 · 1.3.2 · Classify groups of order p^3"]
+    T007["T007 · 1.4 · Investigate groups of squarefree order"]
+    T008["T008 · 1.5 · Build a verified census for small values of n"]
+    T009["T009 · 1.6 · Develop extension and semidirect-product counting tools"]
+    T010["T010 · 1.6.1 · Apply extension methods to a mixed-prime family"]
+    T011["T011 · 1.7 · Synthesize what can be counted uniformly for general n"]
+
+    T001 --> T002
+    T001 --> T003
+    T001 --> T004
+    T004 --> T005
+    T004 --> T006
+    T001 --> T007
+    T001 --> T008
+    T001 --> T009
+    T009 --> T010
+    T001 --> T011
+
+    T002 -. "evidence" .-> T011
+    T003 -. "evidence" .-> T011
+    T005 -. "evidence" .-> T011
+    T006 -. "evidence" .-> T011
+    T007 -. "evidence" .-> T011
+    T008 -. "checks" .-> T011
+    T009 -. "method" .-> T011
+    T010 -. "evidence" .-> T011
+```
+
+In this sketch, the solid arrows represent conceptual parent-child relationships, while the dotted arrows show examples of information that could feed a later synthesis task. In a real project, dependency edges should be recorded in `roadmap.yaml` only when the corresponding prerequisite relationship has actually been established.
+
+The branches play different roles:
+
+- `T002` gives a complete classification for one mixed-prime family and demonstrates how Sylow theory and semidirect products can produce an exact count.
+- `T003` separates the abelian part of the problem, where the structure theorem for finite abelian groups can turn the prime factorization of `n` into a counting problem.
+- `T004` is a broader prime-power branch. Its children `T005` and `T006` keep the first cases bounded rather than treating all `p`-groups as a single task.
+- `T007` asks whether the squarefree case admits a useful uniform classification or counting rule.
+- `T008` provides verified small-order cases that can expose bad conjectures and test formulas developed elsewhere in the project.
+- `T009` isolates reusable machinery involving extensions, automorphism groups, and semidirect products instead of reproving the same structural ideas in every family.
+- `T010` applies that machinery to one specific mixed-prime family chosen during a later conversation.
+- `T011` is a synthesis task. It should not assume that a simple closed formula for arbitrary `n` exists; its job would be to state exactly which families have been counted, which methods generalize, and what remains unresolved.
+
+The important feature is that the roadmap remains a **research map, not a prewritten solution plan**. A broad node can acquire children as the user discovers useful branches, and a later synthesis node can depend on several independently established results without pretending that the general problem was solved from the beginning.
