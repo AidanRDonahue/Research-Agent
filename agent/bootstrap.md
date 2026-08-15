@@ -94,10 +94,9 @@ The project must use the following top-level structure. These paths and responsi
 │       └── accepted project-wide knowledge
 │
 ├── templates/
-│   ├── task-graph.md
-│   ├── resolution.md
-│   └── node-card.md
-│       └── Canonical templates for new work items
+│   └── Canonical templates for new work items
+│       ├── task-graph.md
+│       └── resolution.md
 │
 ├── history/
 │   └── roadmap-events.jsonl

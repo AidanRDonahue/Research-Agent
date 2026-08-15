@@ -99,8 +99,7 @@ At minimum it contains:
 ```text
 templates/
 ├── task-graph.md
-├── resolution.md
-└── node-card.md
+└── resolution.md
 ```
 
 Use these templates when creating new tasks. Do not silently substitute locally invented formats when the canonical template exists.
