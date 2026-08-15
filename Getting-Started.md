@@ -244,6 +244,6 @@ flowchart TD
 
 In this sketch, the solid arrows represent conceptual parent-child relationships, while the dotted arrows show examples of information that could feed a later synthesis task. In a real project, dependency edges should be recorded in `roadmap.yaml` only when the corresponding prerequisite relationship has actually been established.
 
-The key is that the roadmap should remain a map of the research, not a solution written in advance. Broad tasks can branch naturally as new questions and useful directions emerge. Once enough of those branches are complete, the results can be combined into a paper whose structure follows the roadmap. This is especially useful for telling a "story" where multiple conjectures were resolved during the research process. 
+The key is that the roadmap should remain a map of the research, not a solution written in advance. Broad tasks can branch naturally as new questions and useful directions emerge. Once enough of those branches are complete, the results can be combined into a paper whose structure follows the roadmap. This is especially useful for telling the story of the research itself: for example, when several conjectures are resolved during the process of exploring different branches.
 
-The branches that do not end up contributing directly to that synthesis are still valuable: they provide natural starting points for follow-up papers and future research.
+The branches that do not end up contributing directly to that synthesis are still valuable and provide natural starting points for follow-up papers and future research.
