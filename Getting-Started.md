@@ -232,27 +232,18 @@ flowchart TD
     T009 --> T010
 
 
-    T002 -. "evidence" .-> T011
-    T003 -. "evidence" .-> T011
-    T005 -. "evidence" .-> T011
-    T006 -. "evidence" .-> T011
-    T007 -. "evidence" .-> T011
-    T008 -. "checks" .-> T011
-    T009 -. "method" .-> T011
-    T010 -. "evidence" .-> T011
+    T002 -..-> T011
+    T003 -..-> T011
+    T005 -..-> T011
+    T006 -..-> T011
+    T007 -..-> T011
+    T008 -..-> T011
+    T009 -..-> T011
+    T010 -..-> T011
 ```
 
 In this sketch, the solid arrows represent conceptual parent-child relationships, while the dotted arrows show examples of information that could feed a later synthesis task. In a real project, dependency edges should be recorded in `roadmap.yaml` only when the corresponding prerequisite relationship has actually been established.
 
-The branches play different roles:
+The key is that the roadmap should remain a map of the research, not a solution written in advance. Broad tasks can branch naturally as new questions and useful directions emerge. Once enough of those branches are complete, the results can be combined into a paper whose structure follows the roadmap. This is especially useful for telling a "story" where multiple conjectures were resolved during the research process. 
 
-- `T002` gives a complete classification for one mixed-prime family and demonstrates how Sylow theory and semidirect products can produce an exact count.
-- `T003` separates the abelian part of the problem, where the structure theorem for finite abelian groups can turn the prime factorization of `n` into a counting problem.
-- `T004` is a broader prime-power branch. Its children `T005` and `T006` keep the first cases bounded rather than treating all `p`-groups as a single task.
-- `T007` asks whether the squarefree case admits a useful uniform classification or counting rule.
-- `T008` provides verified small-order cases that can expose bad conjectures and test formulas developed elsewhere in the project.
-- `T009` isolates reusable machinery involving extensions, automorphism groups, and semidirect products instead of reproving the same structural ideas in every family.
-- `T010` applies that machinery to one specific mixed-prime family chosen during a later conversation.
-- `T011` is a synthesis task. It should not assume that a simple closed formula for arbitrary `n` exists; its job would be to state exactly which families have been counted, which methods generalize, and what remains unresolved.
-
-The important feature is that the roadmap remains a **research map, not a prewritten solution plan**. A broad node can acquire children as the user discovers useful branches, and a later synthesis node can depend on several independently established results without pretending that the general problem was solved from the beginning.
+The branches that do not end up contributing directly to that synthesis are still valuable: they provide natural starting points for follow-up papers and future research.
