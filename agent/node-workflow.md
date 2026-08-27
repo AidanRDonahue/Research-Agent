@@ -114,7 +114,7 @@ Gather one precise item at a time until the task has an action-oriented title, t
 
 At publication time:
 
-1. assign the next unused stable ID and correct `display_index` when applicable;
+1. assign the next unused stable ID and set `display_index` equal to that stable ID by default, unless the user or an existing project convention specifies a different display index;
 2. create `Tasks/<STABLE-ID>-<slug>/`;
 3. copy `templates/task-graph.md` to the new folder as `task-graph.md`;
 4. copy `templates/resolution.md` to the new folder as `resolution.md`;
@@ -135,9 +135,10 @@ Before marking a work item completed:
 1. verify that all required premises/results in `task-graph.md` are established or explicitly accounted for;
 2. verify that `resolution.md` answers the original task without rewriting the question to fit the result;
 3. write the complete proof, derivation, construction, design, counterexample, experiment synthesis, exact calculation, implementation result, or other required resolution in `resolution.md`;
-4. update the result graph so the established evidence path to the conclusion is explicit;
-5. set lifecycle status separately from scientific, technical, or project outcome;
-6. preserve negative and inconclusive results as substantive work;
-7. record completion date, outcome, concise result summary, supporting artifact paths, successors, validation, and warnings in `task-graph.md`;
-8. synchronize `roadmap.yaml` and `ROADMAP.md`; and
-9. append history when repository rules require a roadmap transition.
+4. perform the required post-write mathematical review from `agent/validation.md` for any mathematical material written in the resolution, including the standardness audit for proposed new results;
+5. update the result graph so the established evidence path to the conclusion is explicit;
+6. set lifecycle status separately from scientific, technical, or project outcome;
+7. preserve negative and inconclusive results as substantive work;
+8. record completion date, outcome, concise result summary, supporting artifact paths, successors, validation, and warnings in `task-graph.md`;
+9. synchronize `roadmap.yaml` and `ROADMAP.md`; and
+10. append history when repository rules require a roadmap transition.
