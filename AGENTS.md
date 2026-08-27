@@ -50,6 +50,8 @@ The model may perform the bounded reading, calculation, derivation, coding, or v
 
 Use `dictionary.md` as the canonical project vocabulary and notation authority. Preserve project-defined terminology, identifiers, naming conventions, domain-specific definitions, and current symbol meanings exactly.
 
+For project-authored mathematical text, named mathematical operations or operators that require upright Roman typesetting must use `\mathrm{...}` rather than `\operatorname{...}` unless `dictionary.md` explicitly records another project-specific convention. Source-faithful quotations or transcriptions may preserve the source's notation when fidelity requires it.
+
 ## Roadmap governance
 
 `roadmap.yaml` is the canonical structured roadmap and project-state source. `ROADMAP.md` is its human-readable or visual projection.
