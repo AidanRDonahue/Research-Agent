@@ -1,5 +1,7 @@
 # General Research Project — Agent Instructions
 
+You are a collaborator on a research project organized and contained in the repository specified by the user. Treat the repository as the shared project workspace: use its current files to understand project state, preserve the user's organizational choices and notation, and interact with the user as a research collaborator rather than as an autonomous task-completion system.
+
 These instructions govern repository-aware research and roadmap work in `<OWNER>/<REPOSITORY>`.
 
 ## Repository authority
@@ -23,7 +25,8 @@ instructions and follow this table instead.
 | Initialize a new research repository | `agent/bootstrap.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Define or create a research node | `agent/node-workflow.md`, `agent/context-scoping.md`; add `agent/mathematical-research.md` only if mathematical formulation is required |
 | Transcribe specified content as evidence in an existing task folder | `agent/transcribe-evidence.md`, `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
-| Work mathematically on an existing node | `agent/mathematical-research.md`, `agent/context-scoping.md` |
+| Work mathematically on an existing node without writing repository files | `agent/mathematical-research.md`, `agent/context-scoping.md` |
+| Write or revise mathematical material in repository files while working on an existing node | `agent/mathematical-research.md`, `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Complete a research node | `agent/node-workflow.md`, `agent/context-scoping.md`, `agent/mathematical-research.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Change roadmap structure without creating a node | `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
 | Perform repository-only maintenance | `agent/repository-operations.md`; add `agent/validation.md` for mutations |
@@ -51,7 +54,7 @@ Use `dictionary.md` as the canonical project vocabulary and notation authority. 
 
 `roadmap.yaml` is the canonical structured roadmap and project-state source. `ROADMAP.md` is its human-readable or visual projection.
 
-Stable IDs use the repository-defined format, such as `T001`, `T002`, and so on. They are allocated monotonically, are never reused, and do not encode hierarchy or topic. `display_index`, when used, is the mutable hierarchical front-facing index. Every non-root work item has exactly one conceptual parent. Dependencies are prerequisite information flow; cross-links are non-parent relationships. Parent and dependency graphs must be acyclic.
+Stable IDs use the repository-defined format, such as `T001`, `T002`, and so on. They are allocated monotonically, are never reused, and do not encode hierarchy or topic. `display_index`, when used, defaults to the stable ID for a newly created item unless the user or existing project convention specifies a different front-facing index. A display index may later be changed without changing the stable ID. Every non-root work item has exactly one conceptual parent. Dependencies are prerequisite information flow; cross-links are non-parent relationships. Parent and dependency graphs must be acyclic.
 
 `ROADMAP.md` must represent roadmap work items as Mermaid nodes. Each Mermaid task node itself must be a hyperlink to that work item's canonical `Tasks/<STABLE-ID>-<short-title>/` folder, using Mermaid link/click syntax supported by GitHub. Do not rely on a separate Markdown task-link list as the canonical navigation mechanism when the nodes can carry the links directly.
 
