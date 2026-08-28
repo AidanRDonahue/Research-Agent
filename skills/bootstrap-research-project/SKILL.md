@@ -44,7 +44,7 @@ Treat this structure as the visible project outline during bootstrap, not merely
 3. Gather only the project information needed to initialize faithfully: repository identity, root research question or objective, supplied background, known terminology/conventions, and any explicit repository-specific validation. Leave genuinely unknown details undecided rather than inventing them.
 4. For a substantive mutation, create a scoped branch unless the user explicitly asked to write to the default branch.
 5. Instantiate the typical project structure shown above using the detailed conventions in `references/project-template.md`. Replace placeholders with the user's supplied project information and preserve existing project-specific files that do not conflict with the project system.
-6. If this installed Skill package contains generated `DISTRIBUTION.json` with a concrete Research-Agent version, release tag, source repository, and source commit, create `research-agent.lock.json` using those exact values and the core Skill set the project is intended to use. If concrete distribution metadata is unavailable, do not invent a lock value; report that the project remains unpinned rather than fabricating a version or commit.
+6. If this installed Skill package contains generated `DISTRIBUTION.json` with a concrete Research-Agent version, release tag, source repository, source commit, and `core_skills` list, create `research-agent.lock.json` using those exact values. If concrete distribution metadata is unavailable, do not invent a lock value; report that the project remains unpinned rather than fabricating a version, commit, or Skill set.
 7. Create `T001` as the root research task for the overarching question. The root task may remain unresolved while child tasks are defined.
 8. Place genuinely shared supplied sources in `Background/`. Do not turn source claims into established project results merely by importing them.
 9. Populate `dictionary.md` only with terminology or conventions supported by the user or supplied project authorities.
@@ -58,4 +58,4 @@ Treat this structure as the visible project outline during bootstrap, not merely
 - Do not copy `RESEARCH_AGENT.md` or the Skill source directories into every project unless the user explicitly wants a vendored distribution. The Agent and Skills are reusable tooling; the target repository stores project-local state and rules.
 - `research-agent.lock.json` records external toolchain compatibility only. It does not override the target project's `AGENTS.md`, roadmap, evidence, or task state.
 - Do not prewrite a solution roadmap. Create only the root task and any tasks the user has explicitly authorized.
-- Do not invent completed research, evidence, citations, historical state, release versions, or commit pins.
+- Do not invent completed research, evidence, citations, historical state, release versions, commit pins, or installed Skill sets.

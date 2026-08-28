@@ -63,7 +63,13 @@ def parse_skill_frontmatter(skill_md: Path) -> tuple[str, str]:
     description_match = re.search(r"^description:\s*(\S.*)$", frontmatter, re.MULTILINE)
     if not name_match or not description_match:
         die(f"{skill_md} frontmatter must contain non-empty name and description fields")
-    return name_match.group(1), description_match.group(1).strip()
+    name = name_match.group(1)
+    description = description_match.group(1).strip()
+    if name.startswith("-") or name.endswith("-") or "--" in name or len(name) > 64:
+        die(f"{skill_md} contains an invalid Skill name")
+    if len(description) > 1024 or "<" in description or ">" in description:
+        die(f"{skill_md} contains an invalid Skill description")
+    return name, description
 
 
 def validate_skill(name: str, path: Path) -> None:
@@ -140,9 +146,15 @@ def main() -> int:
     skill_entries = manifest.get("skills")
     if not isinstance(skill_entries, list) or not skill_entries:
         die("skills-manifest.json must contain a non-empty skills list")
-    manifest_names = [entry.get("name") for entry in skill_entries]
+    for entry in skill_entries:
+        if not isinstance(entry, dict) or not isinstance(entry.get("name"), str) or not isinstance(entry.get("path"), str):
+            die("every manifest Skill entry must contain string name and path fields")
+    manifest_names = [entry["name"] for entry in skill_entries]
+    manifest_paths = [entry["path"] for entry in skill_entries]
     if len(manifest_names) != len(set(manifest_names)):
         die("skills-manifest.json contains duplicate Skill names")
+    if len(manifest_paths) != len(set(manifest_paths)):
+        die("skills-manifest.json contains duplicate Skill paths")
 
     discovered = sorted(
         p.name for p in SKILLS_DIR.iterdir() if p.is_dir() and (p / "SKILL.md").is_file()
@@ -158,10 +170,8 @@ def main() -> int:
 
     release_skills = []
     for entry in skill_entries:
-        name = entry.get("name")
-        relative_path = entry.get("path")
-        if not isinstance(name, str) or not isinstance(relative_path, str):
-            die("every manifest Skill entry must contain string name and path fields")
+        name = entry["name"]
+        relative_path = entry["path"]
         path = ROOT / relative_path
         validate_skill(name, path)
         skill_metadata = {
@@ -172,6 +182,7 @@ def main() -> int:
             "source_repository": manifest["repository"],
             "source_commit": source_commit,
             "skill": name,
+            "core_skills": manifest_names,
         }
         archive = output / name / "skill.zip"
         digest, size = package_skill(name, path, archive, skill_metadata)
