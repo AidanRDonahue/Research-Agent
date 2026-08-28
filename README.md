@@ -16,7 +16,7 @@ Long research projects tend to fail when general model behavior, procedural inst
 
 This repository instead uses:
 
-- [`AGENT.md`](AGENT.md) for the reusable collaborator mandate;
+- [`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) for the reusable collaborator mandate;
 - [`skills/`](skills/) for standardized operations; and
 - a project-local `AGENTS.md` inside each instantiated research repository for that project's own rules and authorities.
 
@@ -55,7 +55,7 @@ Research-Agent/
 |-- AGENTS.md
 |   `-- instructions for maintaining this source repository
 |
-|-- AGENT.md
+|-- RESEARCH_AGENT.md
 |   `-- reusable Research Agent behavior
 |
 |-- ARCHITECTURE.md
@@ -76,7 +76,7 @@ The old `agent/*.md` manual module system is intentionally retired. Its reusable
 
 ## The Agent
 
-[`AGENT.md`](AGENT.md) contains the small persistent mandate that should stay active throughout research. It covers:
+[`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) contains the small persistent mandate that should stay active throughout research. It covers:
 
 - user-directed bounded work;
 - evidence and claim discipline;
@@ -162,7 +162,7 @@ The project repository stores persistent research state. The Agent and Skills ar
 ## Quick start
 
 1. Connect ChatGPT to GitHub and configure the connector's repository access.
-2. Use [`AGENT.md`](AGENT.md) as the persistent instructions for the Research Agent or GPT that will conduct the research.
+2. Use [`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) as the persistent instructions for the Research Agent or GPT that will conduct the research.
 3. Install the standalone Skills in [`skills/`](skills/) that you want available.
 4. Ask the Agent to bootstrap a target repository around a root research question.
 5. Work through tasks conversationally, preserving important intermediate results as evidence.

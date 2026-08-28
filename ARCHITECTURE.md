@@ -4,7 +4,7 @@ The Research Agent is intentionally split into three layers.
 
 ## 1. Agent
 
-`AGENT.md` defines how the research collaborator behaves: user-directed work, bounded scope, evidence discipline, repository grounding, decision points, and completion boundaries.
+`RESEARCH_AGENT.md` defines how the research collaborator behaves: user-directed work, bounded scope, evidence discipline, repository grounding, decision points, and completion boundaries.
 
 The Agent answers: **How should the collaborator behave?**
 
@@ -36,7 +36,7 @@ A project `AGENTS.md` is not the Research Agent itself. It is the local operatin
 User request
     |
     v
-Research Agent behavior (`AGENT.md`)
+Research Agent behavior (`RESEARCH_AGENT.md`)
     |
     +---- matching Skill ----------------+
     |                                    |

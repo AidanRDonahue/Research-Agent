@@ -7,13 +7,42 @@ description: Initialize or instantiate a repository as a Research-Agent project.
 
 Initialize the target repository as a persistent, user-directed research workspace.
 
+## Typical project structure
+
+Use the following as the default structure for a bootstrapped project, subject to compatible pre-existing project artifacts and any project-local constraints:
+
+```text
+<Project>/
+|-- README.md
+|-- AGENTS.md
+|-- dictionary.md
+|-- roadmap.yaml
+|-- ROADMAP.md
+|-- Tasks/
+|   |-- README.md
+|   `-- T001-<root-slug>/
+|       |-- task-graph.md
+|       `-- resolution.md
+|-- Background/
+|-- templates/
+|   |-- task-graph.md
+|   `-- resolution.md
+|-- history/
+|   `-- roadmap-events.jsonl
+|-- checks/
+|   `-- project-system-checklist.md
+`-- <project-specific artifacts>
+```
+
+Treat this structure as the visible project outline during bootstrap, not merely as an implementation detail hidden in a reference file. Use `references/project-template.md` for the detailed rules governing each element.
+
 ## Workflow
 
 1. Identify the exact target repository and verify its current default branch and write permission.
 2. Inspect the current repository before proposing changes. If a project-local `AGENTS.md` already exists, read it first and preserve compatible repository-specific constraints.
 3. Gather only the project information needed to initialize faithfully: repository identity, root research question or objective, supplied background, known terminology/conventions, and any explicit repository-specific validation. Leave genuinely unknown details undecided rather than inventing them.
 4. For a substantive mutation, create a scoped branch unless the user explicitly asked to write to the default branch.
-5. Instantiate the canonical project structure from `references/project-template.md`. Replace placeholders with the user's supplied project information and preserve existing project-specific files that do not conflict with the project system.
+5. Instantiate the typical project structure shown above using the detailed conventions in `references/project-template.md`. Replace placeholders with the user's supplied project information and preserve existing project-specific files that do not conflict with the project system.
 6. Create `T001` as the root research task for the overarching question. The root task may remain unresolved while child tasks are defined.
 7. Place genuinely shared supplied sources in `Background/`. Do not turn source claims into established project results merely by importing them.
 8. Populate `dictionary.md` only with terminology or conventions supported by the user or supplied project authorities.
@@ -24,6 +53,6 @@ Initialize the target repository as a persistent, user-directed research workspa
 ## Boundaries
 
 - Do not copy this source repository's own `AGENTS.md` into the target project. Create a project-local `AGENTS.md` using the baseline in `references/project-template.md`.
-- Do not copy `AGENT.md` or the Skill source directories into every project unless the user explicitly wants a vendored distribution. The Agent and Skills are reusable tooling; the target repository stores project-local state and rules.
+- Do not copy `RESEARCH_AGENT.md` or the Skill source directories into every project unless the user explicitly wants a vendored distribution. The Agent and Skills are reusable tooling; the target repository stores project-local state and rules.
 - Do not prewrite a solution roadmap. Create only the root task and any tasks the user has explicitly authorized.
 - Do not invent completed research, evidence, citations, or historical state.

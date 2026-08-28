@@ -10,7 +10,7 @@ Repository access is granted through that connector configuration. Access to one
 
 ## 2. Configure the Research Agent
 
-Use [`AGENT.md`](AGENT.md) as the persistent instruction set for the research collaborator. This can be placed in the instructions of the GPT/agent configuration you use for research, or explicitly supplied at the start of a session when no persistent configuration is being used.
+Use [`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) as the persistent instruction set for the research collaborator. This can be placed in the instructions of the GPT/agent configuration you use for research, or explicitly supplied at the start of a session when no persistent configuration is being used.
 
 The Agent contains general research behavior only. It does not contain the state or exact rules of a particular research project.
 
