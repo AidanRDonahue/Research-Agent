@@ -21,8 +21,11 @@ Install the standalone Skill packages under [`skills/`](skills/) independently:
 - `bootstrap-research-project`
 - `define-research-task`
 - `transcribe-research-evidence`
+- `review-mathematical-result`
+- `restructure-research-roadmap`
 - `complete-research-task`
 - `validate-research-project`
+- `synthesize-research-project`
 
 Skills provide repeatable procedures. When a Skill operates on a project repository, it first reads that project's own `AGENTS.md` and follows the local rules there.
 
@@ -163,6 +166,8 @@ or:
 Scrutinize the argument we have so far and look for gaps.
 ```
 
+The last request is handled naturally by `review-mathematical-result` when that Skill is installed.
+
 The repository allows the conversation to stay narrow because task state and evidence are persistent.
 
 ## 11. Preserve important evidence
@@ -210,7 +215,9 @@ flowchart TD
     T004 --> T005
 ```
 
-Only create those later nodes when a user-directed task-definition conversation actually reaches them.
+Only create those later nodes when a user-directed task-definition conversation actually reaches them. If later research shows that a branch should be split, reparented, or reorganized, use `restructure-research-roadmap` rather than silently rewriting the map.
+
+When enough tasks are complete to support a coherent paper or report, `synthesize-research-project` can identify the central result chain, exposition order, gaps, and follow-up branches without rewriting the research history.
 
 ## Mental model
 

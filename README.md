@@ -65,8 +65,11 @@ Research-Agent/
 |   |-- bootstrap-research-project/
 |   |-- define-research-task/
 |   |-- transcribe-research-evidence/
+|   |-- review-mathematical-result/
+|   |-- restructure-research-roadmap/
 |   |-- complete-research-task/
-|   `-- validate-research-project/
+|   |-- validate-research-project/
+|   `-- synthesize-research-project/
 |
 |-- Getting-Started.md
 `-- README.md
@@ -104,6 +107,14 @@ Use when the user wants to define, create, add, or branch a new research task. I
 
 Use when the user wants specified content faithfully preserved as Markdown evidence in an existing task folder. It does not interpret the evidence or advance task state.
 
+### `review-mathematical-result`
+
+Use when the user wants a theorem, proof, derivation, bound, or argument scrutinized adversarially. It checks the exact claim, dependencies, hidden assumptions, edge cases, counterexamples, proved scope, and standardness without automatically changing project state.
+
+### `restructure-research-roadmap`
+
+Use when research direction changes and the user wants to split, merge, reparent, relink, or otherwise reorganize tasks while preserving stable task identity, negative or inconclusive branches, and research history.
+
 ### `complete-research-task`
 
 Use only when the user explicitly asks to evaluate, resolve, synthesize, or complete a task. It verifies the evidence and writes the canonical resolution at the supported scope.
@@ -111,6 +122,10 @@ Use only when the user explicitly asks to evaluate, resolve, synthesize, or comp
 ### `validate-research-project`
 
 Use when auditing project structure, roadmap/task consistency, evidence boundaries, history, terminology, or changed mathematics.
+
+### `synthesize-research-project`
+
+Use when a developed project should be turned into a higher-level exposition, report plan, or paper structure. It separates the main result chain from supporting, negative, inconclusive, and follow-up branches, and keeps research history distinct from exposition order.
 
 Each Skill must be installed or packaged independently. Do not combine the entire `skills/` directory into one Skill archive.
 
