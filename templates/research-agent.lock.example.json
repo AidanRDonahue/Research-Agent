@@ -1,0 +1,20 @@
+{
+  "_comment": "Copy to research-agent.lock.json and replace the angle-bracket source commit with the exact source_commit from research-agent-distribution.json.",
+  "schema_version": 1,
+  "distribution": {
+    "repository": "AidanRDonahue/Research-Agent",
+    "version": "0.1.0",
+    "release_tag": "v0.1.0",
+    "source_commit": "<SOURCE_COMMIT_FROM_RELEASE_MANIFEST>"
+  },
+  "required_skills": [
+    "bootstrap-research-project",
+    "complete-research-task",
+    "define-research-task",
+    "restructure-research-roadmap",
+    "review-mathematical-result",
+    "synthesize-research-project",
+    "transcribe-research-evidence",
+    "validate-research-project"
+  ]
+}

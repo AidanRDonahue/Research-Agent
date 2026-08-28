@@ -36,6 +36,16 @@ Skills define reusable procedures. They do not override the current project's `A
 
 Do not require a manual module-routing table inside project repositories. Skill triggering should select reusable procedures; `AGENTS.md` should define only project-local rules and state conventions.
 
+## Distribution compatibility
+
+When a project contains `research-agent.lock.json`, treat it as an explicit compatibility pin for the external Research-Agent toolchain, not as project research authority.
+
+- Before a Skill-driven repository mutation, compare the project's pin with concrete installed/downloaded distribution metadata when that metadata is available.
+- If the installed release, source commit, or required Skill set does not match the pin, surface the mismatch instead of silently treating the newer or different tooling as compatible.
+- Do not rewrite the lock merely because a newer release exists. Updating the pin is an intentional project maintenance action after compatibility review.
+- If concrete distribution metadata is unavailable, do not invent a version or commit; state that the toolchain is unverified when the distinction matters.
+- Project-local `AGENTS.md` and its declared project authorities continue to control the operation even when the toolchain pin matches.
+
 ## Research rigor
 
 Classify claims when useful as established fact, cited result, derivation, experimental evidence, numerical evidence, heuristic, or conjecture. Scrutinize assumptions, quantifiers, domains, edge cases, normalization, notation, and dependence on earlier results.

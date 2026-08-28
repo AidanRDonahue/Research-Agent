@@ -1,32 +1,77 @@
 # Research Agent
 
-Research Agent is a framework for guided work on long, branching research questions. It is designed to keep a model anchored to the user's actual research program across many conversations without asking the model to autonomously finish the entire problem.
+Research Agent is a framework for guided work on long, branching research questions. It keeps a model anchored to the user's actual research program across many conversations without treating a task plan as permission to autonomously finish the entire problem.
 
-The architecture separates three concerns that were previously mixed together:
+The architecture separates three runtime concerns:
 
-1. **Agent behavior** - how the research collaborator should behave.
-2. **Skills** - repeatable procedures such as defining a task or transcribing evidence.
-3. **Project repository** - local rules, state, notation, roadmap, tasks, evidence, and history for one research project.
+1. **Agent behavior** — how the research collaborator should behave.
+2. **Skills** — repeatable procedures such as defining a task or transcribing evidence.
+3. **Project repository** — local rules, state, notation, roadmap, tasks, evidence, and history for one research project.
 
-See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the design in more detail.
+A versioned distribution layer now makes the reusable Agent/Skill toolchain reproducible without mixing it into project state.
 
-## Why this separation matters
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the design and [`USING_IN_YOUR_PROJECT.md`](USING_IN_YOUR_PROJECT.md) for the complete consumer tutorial.
 
-Long research projects tend to fail when general model behavior, procedural instructions, and project state all live in one large prompt. The model may load irrelevant instructions, lose track of what is local versus reusable, or treat a task plan as permission to run ahead.
+## Guiding rule
 
-This repository instead uses:
+> **Agent = behavior. Skill = procedure. Project repository = state and local rules. Distribution = versioned packaging and compatibility metadata.**
+
+Long research projects tend to fail when general model behavior, procedural instructions, and project state all live in one large prompt. This repository instead uses:
 
 - [`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) for the reusable collaborator mandate;
-- [`skills/`](skills/) for standardized operations; and
-- a project-local `AGENTS.md` inside each instantiated research repository for that project's own rules and authorities.
+- [`skills/`](skills/) for standardized operations;
+- a project-local `AGENTS.md` inside each instantiated research repository for that project's own rules and authorities; and
+- [`VERSION`](VERSION), [`skills-manifest.json`](skills-manifest.json), and release tooling for a reproducible external toolchain.
 
-The guiding rule is:
+## Versioned distribution
 
-> **Agent = behavior. Skill = procedure. Project repository = state and local rules.**
+`VERSION` is the semantic version of the Agent/core-Skill suite. `skills-manifest.json` lists the complete Skill set associated with that source version.
+
+Running:
+
+```bash
+python scripts/package_skills.py --output dist
+```
+
+validates the manifest/source layout and creates deterministic artifacts:
+
+```text
+dist/
+|-- research-agent-distribution.json
+|-- research-agent-skills-v<VERSION>.zip
+|-- SHA256SUMS
+|-- bootstrap-research-project/
+|   `-- skill.zip
+|-- complete-research-task/
+|   `-- skill.zip
+`-- ... one skill.zip per core Skill
+```
+
+Every `skill.zip` remains an independent ChatGPT Skill. The outer `research-agent-skills-v<VERSION>.zip` is only a convenience transport bundle; extract it before installing Skills.
+
+The generated `research-agent-distribution.json` binds the distribution to the exact source commit. Each Skill archive also receives generated `DISTRIBUTION.json` metadata with the same release identity.
+
+Tagged `v<VERSION>` builds are published by [`.github/workflows/release-skills.yml`](.github/workflows/release-skills.yml). Pull requests run the same validation/packaging job and expose the proposed packages as a workflow artifact.
+
+See [`RELEASES.md`](RELEASES.md) for the release procedure.
+
+## Project compatibility pins
+
+A project may store `research-agent.lock.json` to record which external Research-Agent release it was tested against. The lock records the source repository, version, release tag, source commit, and required Skills.
+
+The lock is not research authority. It never overrides the project's `AGENTS.md`, dictionary, roadmap, task evidence, or current repository state.
+
+A newer Research-Agent release should not silently update the lock. Compare intentionally, test the new toolchain, reconcile project-local differences, and then update the pin.
+
+Use [`templates/research-agent.lock.example.json`](templates/research-agent.lock.example.json) when a bootstrap environment cannot read generated package metadata. A local Research-Agent checkout can verify a pin with:
+
+```bash
+python scripts/check_project_compatibility.py \
+  /path/to/project/research-agent.lock.json \
+  --distribution /path/to/research-agent-distribution.json
+```
 
 ## Core research behavior
-
-The Research Agent is intended for user-directed research rather than autonomous completion.
 
 A normal task conversation looks like:
 
@@ -54,13 +99,19 @@ Creating a task does not authorize the model to execute every step in the task p
 Research-Agent/
 |-- AGENTS.md
 |   `-- instructions for maintaining this source repository
-|
 |-- RESEARCH_AGENT.md
 |   `-- reusable Research Agent behavior
-|
 |-- ARCHITECTURE.md
-|   `-- agent / skill / project separation
-|
+|   `-- Agent / Skill / project separation
+|-- VERSION
+|-- skills-manifest.json
+|-- RELEASES.md
+|-- USING_IN_YOUR_PROJECT.md
+|-- scripts/
+|   |-- package_skills.py
+|   `-- check_project_compatibility.py
+|-- templates/
+|   `-- research-agent.lock.example.json
 |-- skills/
 |   |-- bootstrap-research-project/
 |   |-- define-research-task/
@@ -70,118 +121,51 @@ Research-Agent/
 |   |-- complete-research-task/
 |   |-- validate-research-project/
 |   `-- synthesize-research-project/
-|
 |-- Getting-Started.md
-`-- README.md
+`-- .github/workflows/release-skills.yml
 ```
 
-The old `agent/*.md` manual module system is intentionally retired. Its reusable procedures have been moved into standalone Skills, and its project-local rules have been moved into the project template owned by the bootstrap Skill.
+The old `agent/*.md` manual module system is intentionally retired. Reusable procedures are standalone Skills; project-local rules belong in the project template owned by the bootstrap Skill.
 
 ## The Agent
 
-[`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) contains the small persistent mandate that should stay active throughout research. It covers:
-
-- user-directed bounded work;
-- evidence and claim discipline;
-- repository grounding;
-- task-completion boundaries;
-- meaningful decision points;
-- research rigor; and
-- safe repository mutation defaults.
+[`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) contains the small persistent mandate that should stay active throughout research. It covers user-directed bounded work, evidence and claim discipline, repository grounding, task-completion boundaries, meaningful decision points, rigor, safe repository mutation defaults, and awareness of an explicit project toolchain pin.
 
 It intentionally does **not** define the exact task-folder schema, roadmap IDs, or the state of any particular research project.
 
 ## The Skills
 
-Each immediate child of [`skills/`](skills/) is a standalone ChatGPT Skill.
+Each immediate child of [`skills/`](skills/) is a standalone ChatGPT Skill:
 
-### `bootstrap-research-project`
+- **`bootstrap-research-project`** initializes a structured research repository and records a concrete Research-Agent compatibility lock when packaged distribution metadata is available.
+- **`define-research-task`** conducts guided intake and publishes a new bounded task without solving it.
+- **`transcribe-research-evidence`** preserves specified content faithfully as task-local Markdown evidence.
+- **`review-mathematical-result`** adversarially audits a theorem, proof, derivation, bound, or argument without automatically changing project state.
+- **`restructure-research-roadmap`** reorganizes task relationships while preserving identity, evidence, negative/inconclusive branches, and history.
+- **`complete-research-task`** runs only when completion is explicitly requested and writes the supported canonical resolution.
+- **`validate-research-project`** audits structure, roadmap/task consistency, evidence boundaries, history, terminology, and applicable mathematics.
+- **`synthesize-research-project`** builds higher-level exposition from established project results while preserving exact hypotheses and unresolved gaps.
 
-Use when creating or initializing a structured research repository. It owns the reusable project templates and creates the root task, roadmap, dictionary, task conventions, history, and validation structure.
-
-### `define-research-task`
-
-Use when the user wants to define, create, add, or branch a new research task. It conducts guided intake, then publishes the new task without solving it.
-
-### `transcribe-research-evidence`
-
-Use when the user wants specified content faithfully preserved as Markdown evidence in an existing task folder. It does not interpret the evidence or advance task state.
-
-### `review-mathematical-result`
-
-Use when the user wants a theorem, proof, derivation, bound, or argument scrutinized adversarially. It checks the exact claim, dependencies, hidden assumptions, edge cases, counterexamples, proved scope, and standardness without automatically changing project state.
-
-### `restructure-research-roadmap`
-
-Use when research direction changes and the user wants to split, merge, reparent, relink, or otherwise reorganize tasks while preserving stable task identity, negative or inconclusive branches, and research history.
-
-### `complete-research-task`
-
-Use only when the user explicitly asks to evaluate, resolve, synthesize, or complete a task. It verifies the evidence and writes the canonical resolution at the supported scope.
-
-### `validate-research-project`
-
-Use when auditing project structure, roadmap/task consistency, evidence boundaries, history, terminology, or changed mathematics.
-
-### `synthesize-research-project`
-
-Use when a developed project should be turned into a higher-level exposition, report plan, or paper structure. It separates the main result chain from supporting, negative, inconclusive, and follow-up branches, and keeps research history distinct from exposition order.
-
-Each Skill must be installed or packaged independently. Do not combine the entire `skills/` directory into one Skill archive.
+Do not combine the entire `skills/` source directory into a single Skill archive.
 
 ## Project-local `AGENTS.md`
 
-An instantiated research repository gets its own `AGENTS.md`. The bootstrap Skill's project template defines the default local contract.
-
-That file answers questions such as:
-
-- Which files are authoritative for this project?
-- What is the canonical roadmap state?
-- How are stable task IDs allocated?
-- What context may be loaded for one task?
-- What task-folder structure is required?
-- What notation and terminology rules apply?
-- What repository validation must run?
+An instantiated research repository gets its own `AGENTS.md`. The bootstrap Skill's project template defines the default local contract. That file answers which files are authoritative, how roadmap/task state works, what context may be loaded, what notation rules apply, and what validation must run.
 
 A project-local `AGENTS.md` should not manually route the model to procedural Markdown modules. Skills provide procedure selection; the project file provides local authority.
 
-## Typical project structure
-
-A bootstrapped project normally looks like:
-
-```text
-<Project>/
-|-- README.md
-|-- AGENTS.md
-|-- dictionary.md
-|-- roadmap.yaml
-|-- ROADMAP.md
-|-- Tasks/
-|   |-- README.md
-|   `-- T001-<root-slug>/
-|       |-- task-graph.md
-|       `-- resolution.md
-|-- Background/
-|-- templates/
-|   |-- task-graph.md
-|   `-- resolution.md
-|-- history/
-|   `-- roadmap-events.jsonl
-|-- checks/
-|   `-- project-system-checklist.md
-`-- <project-specific artifacts>
-```
-
-The project repository stores persistent research state. The Agent and Skills are reusable tooling and do not need to be vendored into every project unless the user deliberately wants a self-contained copy.
-
 ## Quick start
 
-1. Connect ChatGPT to GitHub and configure the connector's repository access.
-2. Use [`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) as the persistent instructions for the Research Agent or GPT that will conduct the research.
-3. Install the standalone Skills in [`skills/`](skills/) that you want available.
-4. Ask the Agent to bootstrap a target repository around a root research question.
-5. Work through tasks conversationally, preserving important intermediate results as evidence.
-6. Explicitly request task completion only when you want the resolution workflow to run.
+For a stable installation:
+
+1. Choose a tagged Research-Agent release.
+2. Use `RESEARCH_AGENT.md` from that tag as the persistent instructions for your research GPT/agent.
+3. Download and extract `research-agent-skills-v<VERSION>.zip`.
+4. Install the individual `skill.zip` packages you want available.
+5. Connect ChatGPT to the target GitHub repository.
+6. Ask the Agent to bootstrap the target around a root research question.
+7. Preserve the resulting `research-agent.lock.json` when concrete release metadata is available.
+8. Work through tasks conversationally and request completion only when you intend the completion workflow to run.
 
 A minimal bootstrap request is:
 
@@ -192,25 +176,7 @@ Initialize <OWNER>/<REPOSITORY> as a Research-Agent project around the question:
 Use <SUPPLIED MATERIAL> as background.
 ```
 
-A typical new-task request is:
-
-```text
-I want to create a new task branching from T001. Start the task-definition conversation.
-```
-
-A typical evidence request is:
-
-```text
-Transcribe the result we just established as evidence for T004 and save it as notes/<FILENAME>.md.
-```
-
-A typical completion request is:
-
-```text
-Evaluate T004 for completion and complete it if the evidence supports an outcome.
-```
-
-See [`Getting-Started.md`](Getting-Started.md) for a full first-project walkthrough.
+See [`USING_IN_YOUR_PROJECT.md`](USING_IN_YOUR_PROJECT.md) for installation, pinning, daily workflow, upgrading, development packaging, and troubleshooting.
 
 ## Design principle
 

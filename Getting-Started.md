@@ -1,22 +1,31 @@
 # Getting Started
 
-This guide shows how to use the reconfigured Research Agent from an empty repository through the creation of the first child research task.
+This guide shows the shortest path from a versioned Research-Agent release to the creation of a first child research task. For a fully self-contained installation, pinning, upgrade, development, and troubleshooting guide, see [`USING_IN_YOUR_PROJECT.md`](USING_IN_YOUR_PROJECT.md).
 
-## 1. Connect GitHub
+## 1. Choose one Research-Agent release
 
-Connect the GitHub integration in ChatGPT and configure the ChatGPT connector in GitHub so it can access the repositories you want the Research Agent to read or edit.
+Use a tagged release for repeatable research rather than mixing files from different points on `main`.
 
-Repository access is granted through that connector configuration. Access to one account or organization does not automatically imply access to every repository; the connector must be configured for the intended repositories.
+From that same release:
 
-## 2. Configure the Research Agent
+- use `RESEARCH_AGENT.md` as the persistent collaborator instructions;
+- download `research-agent-skills-v<VERSION>.zip`;
+- extract the bundle and install each desired inner `skill.zip`; and
+- retain `research-agent-distribution.json` so the exact source commit is observable.
 
-Use [`RESEARCH_AGENT.md`](RESEARCH_AGENT.md) as the persistent instruction set for the research collaborator. This can be placed in the instructions of the GPT/agent configuration you use for research, or explicitly supplied at the start of a session when no persistent configuration is being used.
+The outer release bundle is not itself a Skill.
 
-The Agent contains general research behavior only. It does not contain the state or exact rules of a particular research project.
+## 2. Connect GitHub
 
-## 3. Install the Skills
+Connect the GitHub integration in ChatGPT and configure repository access for the project you want the Research Agent to read or edit. Access to one account or organization does not automatically imply access to every repository.
 
-Install the standalone Skill packages under [`skills/`](skills/) independently:
+## 3. Configure the Research Agent
+
+Use `RESEARCH_AGENT.md` from the chosen release tag as the persistent instruction set for the research collaborator. The Agent contains general research behavior only; it does not contain the state or exact rules of a particular research project.
+
+## 4. Install the core Skills
+
+For the complete workflow, install the independently packaged Skills extracted from the release bundle:
 
 - `bootstrap-research-project`
 - `define-research-task`
@@ -27,9 +36,9 @@ Install the standalone Skill packages under [`skills/`](skills/) independently:
 - `validate-research-project`
 - `synthesize-research-project`
 
-Skills provide repeatable procedures. When a Skill operates on a project repository, it first reads that project's own `AGENTS.md` and follows the local rules there.
+Each package contains generated distribution metadata. Source changes in GitHub do not automatically replace an installed Skill.
 
-## 4. Bootstrap a project
+## 5. Bootstrap a project
 
 A concise initialization request is:
 
@@ -47,15 +56,13 @@ Initialize <OWNER>/<REPOSITORY> as a Research-Agent project around the question:
 "What are the different groups of order n up to isomorphism?"
 ```
 
-The bootstrap Skill creates the project-local `AGENTS.md`, dictionary, roadmap, task templates, validation checklist, and the root task `T001`.
+The bootstrap Skill creates the project-local `AGENTS.md`, dictionary, roadmap, task templates, validation checklist, root task `T001`, and—when concrete package metadata is available—`research-agent.lock.json` pinning the external toolchain.
 
 The root task represents the overarching research question. It does not need to be marked resolved before child tasks are created.
 
-## 5. Understand what is now persistent
+## 6. Understand what is persistent
 
-After bootstrap, the target repository rather than model memory stores the research state.
-
-The most important authorities are:
+After bootstrap, the target repository rather than model memory stores research state. The important authorities are:
 
 - `AGENTS.md` for local project rules;
 - `dictionary.md` for terminology and notation;
@@ -64,9 +71,9 @@ The most important authorities are:
 - `Tasks/` for task contracts, evidence, and resolutions; and
 - `Background/` for shared foundations.
 
-When a later conversation resumes work on the project, the Agent should read the repository instead of relying on remembered state.
+`research-agent.lock.json` is different: it records external toolchain compatibility and does not override the research authorities above.
 
-## 6. Choose a first branch
+## 7. Choose a first branch
 
 The user can ask:
 
@@ -78,7 +85,7 @@ The Agent may suggest options, but suggestions are not automatically tasks.
 
 For the example root question about groups of order `n`, useful possibilities might include prime order, prime-square order, order `pq`, finite abelian groups, or a computational census for small `n`.
 
-## 7. Start the task-definition conversation
+## 8. Start the task-definition conversation
 
 Once a direction looks useful, say:
 
@@ -86,37 +93,21 @@ Once a direction looks useful, say:
 Let's create a task for that direction. Start the task-definition conversation.
 ```
 
-The `define-research-task` Skill begins with:
+The `define-research-task` Skill asks for the concrete bounded target and gathers the parent relation, dependencies, objective, method, stopping rules, outcome branches, assumptions, validation, and planned result graph without solving the task during intake.
 
-> What concrete action and bounded target should this task have?
-
-The user can answer naturally. For example:
-
-> I want to start understanding the classification by looking at groups whose order is the product of two distinct primes.
-
-The conversation then narrows the task one decision at a time.
-
-## 8. Example intake
-
-A possible sequence is:
+For example:
 
 > **Agent:** Should this be a direct child of T001, studying one manageable family of values of `n`?
 >
 > **User:** Yes.
-
+>
 > **Agent:** Should the setting be `|G| = pq` for distinct primes `p < q`?
 >
 > **User:** Yes.
-
+>
 > **Agent:** Do you want examples, or a proof that the classification is complete?
 >
 > **User:** I want the complete classification with a proof.
-
-> **Agent:** Should the argument be organized from Sylow theory and semidirect products?
->
-> **User:** Yes, but I want the proof obligations explained rather than merely citing the classification.
-
-At this point the task can be made precise without the model actually carrying out the proof.
 
 ## 9. Publish the task
 
@@ -126,19 +117,11 @@ When the scope is settled, say:
 Create the task with that scope.
 ```
 
-The task-definition Skill then:
-
-- allocates the next stable ID;
-- creates the canonical task folder;
-- writes `task-graph.md`;
-- keeps `resolution.md` explicitly pending;
-- updates `roadmap.yaml` and `ROADMAP.md`;
-- records history when project rules require it; and
-- validates the change before publishing it.
+The Skill allocates the next stable ID, creates the canonical task folder, writes `task-graph.md`, keeps `resolution.md` pending, synchronizes the roadmap, records history when required by local rules, validates the change, and uses the project's review workflow.
 
 The task plan is a research contract, not authorization to solve the task autonomously.
 
-## 10. Work on the task conversationally
+## 10. Work conversationally
 
 A normal continuation is:
 
@@ -148,90 +131,29 @@ Work with me on T002. For this turn, let's start with what Sylow theory forces a
 
 The Agent should answer that bounded question, state what was established, and return control at the next meaningful decision point.
 
-Later turns can be as small as:
-
-```text
-Can we prove the p-Sylow subgroup is normal in this case?
-```
-
-or:
-
-```text
-Before we use semidirect products, explain why that viewpoint is necessary here.
-```
-
-or:
-
-```text
-Scrutinize the argument we have so far and look for gaps.
-```
-
-The last request is handled naturally by `review-mathematical-result` when that Skill is installed.
-
-The repository allows the conversation to stay narrow because task state and evidence are persistent.
-
-## 11. Preserve important evidence
-
-When a useful result has been established, preserve it separately from the decision about what it proves for the whole task.
-
-For example:
+When a useful result has been established, preserve it explicitly:
 
 ```text
 Transcribe the proof we just established as evidence for T002.
 Save it as notes/sylow-q-normality.md.
 ```
 
-The transcription Skill checks the dictionary, preserves the supplied content faithfully, writes only the requested evidence file, verifies it, and stops. It does not update the roadmap or complete the task.
+When you want adversarial review:
 
-## 12. Complete only when explicitly requested
+```text
+Review the current T002 argument and look for gaps or hidden assumptions.
+```
 
-When the accumulated evidence appears sufficient, the Agent may say that the task looks ready for completion. It should not complete it automatically.
-
-The user can then request:
+When the accumulated evidence appears sufficient, explicitly request completion:
 
 ```text
 Evaluate T002 for completion and complete it if the evidence supports an outcome.
 ```
 
-The completion Skill verifies the original question, dependencies, evidence, proof scope, and project rules before writing the canonical `resolution.md` and changing lifecycle state.
+Negative and inconclusive outcomes remain valid substantive outcomes when supported by the evidence.
 
-Negative and inconclusive outcomes are valid completion outcomes when supported by the evidence.
+## 11. Upgrade deliberately
 
-## Example roadmap growth
+When a newer Research-Agent release appears, do not silently replace your project pin. Update the installed Skills, test the new release, reconcile any project-local workflow changes, and only then update `research-agent.lock.json` to the new version and source commit.
 
-The roadmap should grow from actual research decisions rather than from a prewritten solution plan. A later state might look like:
-
-```mermaid
-flowchart TD
-    T001["T001 - Determine the groups of order n up to isomorphism"]
-    T002["T002 - Classify groups of order pq"]
-    T003["T003 - Count finite abelian groups of order n"]
-    T004["T004 - Investigate groups of prime-power order"]
-    T005["T005 - Classify groups of order p^2"]
-
-    T001 --> T002
-    T001 --> T003
-    T001 --> T004
-    T004 --> T005
-```
-
-Only create those later nodes when a user-directed task-definition conversation actually reaches them. If later research shows that a branch should be split, reparented, or reorganized, use `restructure-research-roadmap` rather than silently rewriting the map.
-
-When enough tasks are complete to support a coherent paper or report, `synthesize-research-project` can identify the central result chain, exposition order, gaps, and follow-up branches without rewriting the research history.
-
-## Mental model
-
-Keep the three layers distinct:
-
-```text
-Research Agent
-    = how the collaborator behaves
-
-Research Skills
-    = how repeatable operations are performed
-
-Project repository
-    = what this project currently knows and requires
-```
-
-That separation is the main architectural change in this version of Research-Agent.
+That separation keeps your research state stable while allowing the reusable Agent/Skill toolchain to evolve.

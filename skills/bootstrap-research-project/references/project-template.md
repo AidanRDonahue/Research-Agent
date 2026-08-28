@@ -11,6 +11,7 @@ Use this reference when bootstrapping a target repository. Replace angle-bracket
 |-- dictionary.md
 |-- roadmap.yaml
 |-- ROADMAP.md
+|-- research-agent.lock.json    # when concrete distribution metadata is available
 |-- Tasks/
 |   |-- README.md
 |   `-- T001-<root-slug>/
@@ -44,8 +45,23 @@ At minimum record:
 - every non-root task has exactly one conceptual parent and parent/dependency graphs are acyclic;
 - task evidence remains task-local unless it genuinely functions as shared `Background/` material;
 - ordinary task work is user-directed and does not authorize autonomous completion;
-- project-authored mathematical operations use `\mathrm{...}` rather than `\operatorname{...}` unless the dictionary records another convention; and
+- project-authored mathematical operations use `\mathrm{...}` rather than `\operatorname{...}` unless the dictionary records another convention;
+- `research-agent.lock.json`, when present, records external toolchain compatibility and never overrides project-local research authority; and
 - substantive repository mutations use a scoped branch and reviewable pull request unless the user explicitly authorizes another write path.
+
+## Toolchain lock
+
+When the installed bootstrap Skill exposes concrete generated `DISTRIBUTION.json` metadata, create `research-agent.lock.json` with schema version 1 and record:
+
+- Research-Agent source repository;
+- release version;
+- release tag;
+- exact source commit; and
+- the core Skills the project expects to use.
+
+If concrete distribution metadata is unavailable, do not guess or infer a version/commit from memory. The project may remain temporarily unpinned; report that limitation so the user can create the lock from the release's `research-agent-distribution.json` later.
+
+The lock is deployment/compatibility metadata. It does not change the authority order for research state.
 
 ## Root task
 
@@ -92,5 +108,6 @@ Create `checks/project-system-checklist.md` covering at least:
 - evidence/result graph consistency;
 - referenced evidence existence;
 - terminology and notation consistency;
-- append-only history validity; and
+- append-only history validity;
+- Research-Agent lock validity when the project uses a compatibility pin; and
 - repository-specific tests or CI when applicable.

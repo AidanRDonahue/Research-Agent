@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "name": "research-agent",
+  "version": "0.1.0",
+  "repository": "AidanRDonahue/Research-Agent",
+  "release_tag": "v0.1.0",
+  "skill_archive_name": "skill.zip",
+  "project_lock": {
+    "filename": "research-agent.lock.json",
+    "schema_version": 1
+  },
+  "skills": [
+    {"name": "bootstrap-research-project", "path": "skills/bootstrap-research-project"},
+    {"name": "complete-research-task", "path": "skills/complete-research-task"},
+    {"name": "define-research-task", "path": "skills/define-research-task"},
+    {"name": "restructure-research-roadmap", "path": "skills/restructure-research-roadmap"},
+    {"name": "review-mathematical-result", "path": "skills/review-mathematical-result"},
+    {"name": "synthesize-research-project", "path": "skills/synthesize-research-project"},
+    {"name": "transcribe-research-evidence", "path": "skills/transcribe-research-evidence"},
+    {"name": "validate-research-project", "path": "skills/validate-research-project"}
+  ]
+}
