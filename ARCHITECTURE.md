@@ -19,8 +19,11 @@ Current Skills:
 - `bootstrap-research-project`: initialize an empty or existing repository as a structured research project.
 - `define-research-task`: conduct task intake and publish a new bounded research task.
 - `transcribe-research-evidence`: faithfully record specified content as task-local Markdown evidence.
+- `review-mathematical-result`: adversarially audit one mathematical claim, proof, derivation, or bound without changing project state.
+- `restructure-research-roadmap`: reorganize task relationships and roadmap structure while preserving stable identity and research history.
 - `complete-research-task`: evaluate and synthesize a task into its canonical resolution when completion is explicitly requested.
 - `validate-research-project`: audit project structure, roadmap/task consistency, evidence boundaries, and applicable mathematical writes.
+- `synthesize-research-project`: combine established project results into a coherent higher-level exposition while separating core results from follow-up branches.
 
 ## 3. Project repository
 
