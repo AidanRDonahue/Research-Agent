@@ -4,18 +4,18 @@ This repository is the source distribution for the Research Agent architecture. 
 
 ## Authority and architecture
 
-- `AGENT.md` defines the reusable Research Agent behavior.
+- `RESEARCH_AGENT.md` defines the reusable Research Agent behavior.
 - `skills/` contains standalone reusable ChatGPT Skills. Each immediate child directory is an independently valid Skill package with its own `SKILL.md` and `agents/openai.yaml`.
 - Project-local instructions used in instantiated research repositories are templates/assets owned by the bootstrap Skill. They must not be confused with this repository's own `AGENTS.md`.
 - `README.md` and `Getting-Started.md` explain installation and use.
 
 Keep the architecture separated into three layers:
 
-1. Agent behavior: reusable research collaboration policy in `AGENT.md`.
+1. Agent behavior: reusable research collaboration policy in `RESEARCH_AGENT.md`.
 2. Skills: repeatable procedures in `skills/<skill-name>/`.
 3. Project state and local rules: files created inside an instantiated research repository, beginning with its own `AGENTS.md`.
 
-Do not reintroduce a central module-routing table or a required `agent/` directory of procedural Markdown modules. A reusable procedure belongs in a Skill. A project-specific convention belongs in the instantiated project's `AGENTS.md` or another project authority. General collaborator behavior belongs in `AGENT.md`.
+Do not reintroduce a central module-routing table or a required `agent/` directory of procedural Markdown modules. A reusable procedure belongs in a Skill. A project-specific convention belongs in the instantiated project's `AGENTS.md` or another project authority. General collaborator behavior belongs in `RESEARCH_AGENT.md`.
 
 ## Skill maintenance
 
