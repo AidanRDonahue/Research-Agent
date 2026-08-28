@@ -1,249 +1,230 @@
-# Starting a Research Project and Defining the First Child Task
+# Getting Started
 
-## 1. Initialization prompt
+This guide shows how to use the reconfigured Research Agent from an empty repository through the creation of the first child research task.
 
-A user can start by giving the agent the repository, the broad research question, the Research-Agent to follow, and any initial background material.
+## 1. Connect GitHub
+
+Connect the GitHub integration in ChatGPT and configure the ChatGPT connector in GitHub so it can access the repositories you want the Research Agent to read or edit.
+
+Repository access is granted through that connector configuration. Access to one account or organization does not automatically imply access to every repository; the connector must be configured for the intended repositories.
+
+## 2. Configure the Research Agent
+
+Use [`AGENT.md`](AGENT.md) as the persistent instruction set for the research collaborator. This can be placed in the instructions of the GPT/agent configuration you use for research, or explicitly supplied at the start of a session when no persistent configuration is being used.
+
+The Agent contains general research behavior only. It does not contain the state or exact rules of a particular research project.
+
+## 3. Install the Skills
+
+Install the standalone Skill packages under [`skills/`](skills/) independently:
+
+- `bootstrap-research-project`
+- `define-research-task`
+- `transcribe-research-evidence`
+- `complete-research-task`
+- `validate-research-project`
+
+Skills provide repeatable procedures. When a Skill operates on a project repository, it first reads that project's own `AGENTS.md` and follows the local rules there.
+
+## 4. Bootstrap a project
+
+A concise initialization request is:
+
+```text
+Initialize <OWNER>/<REPOSITORY> as a Research-Agent project around the question:
+"<ROOT RESEARCH QUESTION>"
+
+Use <SUPPLIED PAPER / NOTES / SOURCES> as background.
+```
 
 For example:
 
-> Use this agent (`https://github.com/AidanRDonahue/Research-Agent`) to set up a research project around the question:
->
-> **“What are the different groups of order `n` up to isomorphism?”**
->
-> Set it up in `<OWNER>/<REPOSITORY>` and use the material I provided as the initial background.
->
-> Follow the instructions in the agent documents and copy the agent into the project.
+```text
+Initialize <OWNER>/<REPOSITORY> as a Research-Agent project around the question:
+"What are the different groups of order n up to isomorphism?"
+```
 
-This gives the agent four important pieces of information:
+The bootstrap Skill creates the project-local `AGENTS.md`, dictionary, roadmap, task templates, validation checklist, and the root task `T001`.
 
-- **Agent authority:** which workflow governs the research project.
-- **Repository:** where the persistent project should live.
-- **Root question:** the broad mathematical question.
-- **Background:** any initial notes, papers, textbooks, or other sources.
+The root task represents the overarching research question. It does not need to be marked resolved before child tasks are created.
 
-The project is then initialized with a root task, `T001`, corresponding to:
+## 5. Understand what is now persistent
 
-> **What are the different groups of order `n` up to isomorphism?**
+After bootstrap, the target repository rather than model memory stores the research state.
 
-This is intentionally broad. The goal of the next conversation is not to solve the classification problem for every `n`, but to identify a useful first branch.
+The most important authorities are:
 
----
+- `AGENTS.md` for local project rules;
+- `dictionary.md` for terminology and notation;
+- `roadmap.yaml` for canonical roadmap state;
+- `ROADMAP.md` for the visual roadmap;
+- `Tasks/` for task contracts, evidence, and resolutions; and
+- `Background/` for shared foundations.
 
-## 2. Starting the first child-task conversation
+When a later conversation resumes work on the project, the Agent should read the repository instead of relying on remembered state.
 
-The agent begins with:
+## 6. Choose a first branch
 
-> **Agent:** What concrete action and bounded target should this task have?
->
-> **User:** I want to start understanding the classification by looking at some simple families of orders.
+The user can ask:
 
-The agent should now help turn that general interest into a precise mathematical problem.
+```text
+What is a good starting point for branching from T001?
+```
 
----
+The Agent may suggest options, but suggestions are not automatically tasks.
 
-## 3. Establish where the task belongs
+For the example root question about groups of order `n`, useful possibilities might include prime order, prime-square order, order `pq`, finite abelian groups, or a computational census for small `n`.
 
-> **Agent:** Should this be a direct child of T001, with the goal of classifying groups for one manageable family of values of `n`?
->
-> **User:** Yes, that sounds right.
+## 7. Start the task-definition conversation
 
-This makes the new task one bounded contribution to the larger classification question.
+Once a direction looks useful, say:
 
----
+```text
+Let's create a task for that direction. Start the task-definition conversation.
+```
 
-## 4. Choose a manageable family of orders
+The `define-research-task` Skill begins with:
 
-The agent can suggest several natural starting points: prime order, prime-square order, products of two distinct primes, or small concrete values of `n`.
+> What concrete action and bounded target should this task have?
 
-> **User:** Let’s look at groups whose order is the product of two distinct primes.
+The user can answer naturally. For example:
 
-That already narrows the problem substantially.
+> I want to start understanding the classification by looking at groups whose order is the product of two distinct primes.
 
----
+The conversation then narrows the task one decision at a time.
 
-## 5. Fix the exact setting
+## 8. Example intake
 
-> **Agent:** Should we take `|G| = pq`, where `p < q` are distinct primes, and try to classify all such groups up to isomorphism?
+A possible sequence is:
+
+> **Agent:** Should this be a direct child of T001, studying one manageable family of values of `n`?
 >
 > **User:** Yes.
 
-Now the child task has a precise domain.
-
----
-
-## 6. Decide whether the task should just list examples or prove the classification
-
-The agent should clarify whether the user wants a survey of known possibilities or a complete theorem.
-
-> **Agent:** Do you want to compare examples of groups of order `pq`, or actually prove that the classification is complete?
+> **Agent:** Should the setting be `|G| = pq` for distinct primes `p < q`?
 >
-> **User:** I want the full classification. If we say those are all the possibilities, I want a proof.
+> **User:** Yes.
 
-This sets the standard of evidence.
-
-The task should not stop after finding some examples. It must prove that no other isomorphism types can occur.
-
----
-
-## 7. Identify the structure that will drive the proof
-
-A natural next question is what tools should organize the classification.
-
-> **Agent:** Should we build the argument from the Sylow theorems and then use semidirect products to describe the nonabelian case?
+> **Agent:** Do you want examples, or a proof that the classification is complete?
 >
-> **User:** Yes. I’d like to understand why those tools give the complete answer, not just quote the classification.
+> **User:** I want the complete classification with a proof.
 
-This gives the task a clear method without yet carrying out the proof.
-
----
-
-## 8. Sharpen the theorem target
-
-The agent can now formulate the expected theorem carefully:
-
-> **Agent:** So should the target be to prove that for distinct primes `p < q`:
+> **Agent:** Should the argument be organized from Sylow theory and semidirect products?
 >
-> - if `p` does not divide `q - 1`, every group of order `pq` is cyclic; and
-> - if `p` divides `q - 1`, there are exactly two groups up to isomorphism: the cyclic group and one nonabelian semidirect product?
->
-> **User:** Yes, that’s exactly what I want to investigate.
+> **User:** Yes, but I want the proof obligations explained rather than merely citing the classification.
 
-At this point, the broad interest has become a concrete theorem-level task.
+At this point the task can be made precise without the model actually carrying out the proof.
 
----
+## 9. Publish the task
 
-## 9. Make the proof obligations explicit
+When the scope is settled, say:
 
-The proof should not simply state the classification theorem. It should explain why each step is forced.
+```text
+Create the task with that scope.
+```
 
-The task should establish, for example:
+The task-definition Skill then:
 
-- what the Sylow theorems imply about the numbers of Sylow `p`- and `q`-subgroups;
-- why the Sylow `q`-subgroup is normal;
-- when the Sylow `p`-subgroup is also normal;
-- why normality of both Sylow subgroups forces the group to be cyclic;
-- how a nontrivial action `C_p -> Aut(C_q)` can exist exactly when `p` divides `q - 1`;
-- why the resulting semidirect product is nonabelian; and
-- why all nontrivial actions produce the same isomorphism type in this setting.
+- allocates the next stable ID;
+- creates the canonical task folder;
+- writes `task-graph.md`;
+- keeps `resolution.md` explicitly pending;
+- updates `roadmap.yaml` and `ROADMAP.md`;
+- records history when project rules require it; and
+- validates the change before publishing it.
 
-The agent can summarize this conversationally:
+The task plan is a research contract, not authorization to solve the task autonomously.
 
-> **Agent:** Then the first task will be to prove the classification from Sylow theory and semidirect products, including why the nonabelian group exists exactly in the `p | (q - 1)` case and why there aren’t any additional isomorphism types.
->
-> **User:** Yes, that seems like a good first task.
+## 10. Work on the task conversationally
 
----
+A normal continuation is:
 
-# Resulting First Child Task
+```text
+Work with me on T002. For this turn, let's start with what Sylow theory forces about the q-Sylow subgroup.
+```
 
-## Research question
+The Agent should answer that bounded question, state what was established, and return control at the next meaningful decision point.
 
-> **What are the groups of order `pq`, for distinct primes `p < q`, up to isomorphism?**
+Later turns can be as small as:
 
-## Relationship to the root task
+```text
+Can we prove the p-Sylow subgroup is normal in this case?
+```
 
-The task is a direct child of `T001`:
+or:
 
-> **What are the different groups of order `n` up to isomorphism?**
+```text
+Before we use semidirect products, explain why that viewpoint is necessary here.
+```
 
-It studies one tractable family of orders and provides a complete classification theorem that can serve as a model for later branches.
+or:
 
-## Theorem target
+```text
+Scrutinize the argument we have so far and look for gaps.
+```
 
-Let `p < q` be distinct primes and let `G` be a group of order `|G| = pq`.
+The repository allows the conversation to stay narrow because task state and evidence are persistent.
 
-Prove the complete classification:
+## 11. Preserve important evidence
 
-- if `p` does not divide `q - 1`, then `G` is isomorphic to the cyclic group `C_pq`;
-- if `p` divides `q - 1`, then there are exactly two isomorphism classes: `C_pq` and a nonabelian semidirect product `C_q ⋊ C_p`.
+When a useful result has been established, preserve it separately from the decision about what it proves for the whole task.
 
-## Required proof obligations
+For example:
 
-The task should prove rather than merely cite:
+```text
+Transcribe the proof we just established as evidence for T002.
+Save it as notes/sylow-q-normality.md.
+```
 
-- the relevant Sylow-subgroup counts;
-- normality of the Sylow `q`-subgroup;
-- the consequences when both Sylow subgroups are normal;
-- the structure of `Aut(C_q) ≅ C_{q-1}`;
-- the existence criterion for a nontrivial homomorphism `C_p -> Aut(C_q)`;
-- construction of the nonabelian semidirect product;
-- completeness of the classification; and
-- uniqueness, up to isomorphism, of the nonabelian group when it exists.
+The transcription Skill checks the dictionary, preserves the supplied content faithfully, writes only the requested evidence file, verifies it, and stops. It does not update the roadmap or complete the task.
 
-Only after that classification is established should the project move to another family of orders.
+## 12. Complete only when explicitly requested
 
----
+When the accumulated evidence appears sufficient, the Agent may say that the task looks ready for completion. It should not complete it automatically.
 
-# General Pattern for Users
+The user can then request:
 
-The overall workflow is:
+```text
+Evaluate T002 for completion and complete it if the evidence supports an outcome.
+```
 
-**Initialization prompt → broad root task `T001` → narrowing conversation → precise child task → guided proof.**
+The completion Skill verifies the original question, dependencies, evidence, proof scope, and project rules before writing the canonical `resolution.md` and changing lifecycle state.
 
-The user does not need to formulate the task in formal research language. Normal responses are enough:
+Negative and inconclusive outcomes are valid completion outcomes when supported by the evidence.
 
-> “I want to start with an easier family of cases.”
+## Example roadmap growth
 
-> “Let’s look at orders that are products of two primes.”
-
-> “I want the full classification, not just examples.”
-
-> “Use Sylow theory, but I want to understand the proof.”
-
-> “Yes, that seems like a good first task.”
-
-The agent’s role is to turn those ordinary mathematical choices into a rigorous, bounded task contract while preserving the user’s actual research direction.
-
----
-
-# Example Roadmap After Several Research Conversations
-
-The first child task does not need to determine the entire future roadmap. New nodes should normally be created only when a later conversation identifies a concrete bounded question. Over time, however, a project asking
-
-> **How many groups of order `n` are there up to isomorphism?**
-
-might grow into a roadmap like the following.
-
-This is only an illustrative roadmap. `T001` and `T002` match the example developed above; the later nodes are hypothetical examples of branches that could be added after separate task-intake conversations.
+The roadmap should grow from actual research decisions rather than from a prewritten solution plan. A later state might look like:
 
 ```mermaid
 flowchart TD
-    T001["T001 · 1 · Determine the number of groups of order n up to isomorphism"]
-
-    T002["T002 · 1.1 · Classify groups of order pq for distinct primes"]
-    T003["T003 · 1.2 · Count finite abelian groups of order n"]
-    T004["T004 · 1.3 · Investigate groups of prime-power order"]
-    T005["T005 · 1.3.1 · Classify groups of order p^2"]
-    T006["T006 · 1.3.2 · Classify groups of order p^3"]
-    T007["T007 · 1.4 · Investigate groups of squarefree order"]
-    T008["T008 · 1.5 · Build a verified census for small values of n"]
-    T009["T009 · 1.6 · Develop extension and semidirect-product counting tools"]
-    T010["T010 · 1.6.1 · Apply extension methods to a mixed-prime family"]
-    T011["T011 · 1.7 · Synthesize what can be counted uniformly for general n"]
+    T001["T001 - Determine the groups of order n up to isomorphism"]
+    T002["T002 - Classify groups of order pq"]
+    T003["T003 - Count finite abelian groups of order n"]
+    T004["T004 - Investigate groups of prime-power order"]
+    T005["T005 - Classify groups of order p^2"]
 
     T001 --> T002
     T001 --> T003
     T001 --> T004
     T004 --> T005
-    T004 --> T006
-    T001 --> T007
-    T001 --> T008
-    T001 --> T009
-    T009 --> T010
-
-
-    T002 -..-> T011
-    T003 -..-> T011
-    T005 -..-> T011
-    T006 -..-> T011
-    T007 -..-> T011
-    T008 -..-> T011
-    T009 -..-> T011
-    T010 -..-> T011
 ```
 
-In this sketch, the solid arrows represent conceptual parent-child relationships, while the dotted arrows show examples of information that could feed a later synthesis task. In a real project, dependency edges should be recorded in `roadmap.yaml` only when the corresponding prerequisite relationship has actually been established.
+Only create those later nodes when a user-directed task-definition conversation actually reaches them.
 
-The key is that the roadmap should remain a map of the research, not a solution written in advance. Broad tasks can branch naturally as new questions and useful directions emerge. Once enough of those branches are complete, the results can be combined into a paper whose structure follows the roadmap. This is especially useful for telling the story of the research itself: for example, when several conjectures are resolved during the process of exploring different branches.
+## Mental model
 
-The branches that do not end up contributing directly to that synthesis are still valuable and provide natural starting points for follow-up papers and future research.
+Keep the three layers distinct:
+
+```text
+Research Agent
+    = how the collaborator behaves
+
+Research Skills
+    = how repeatable operations are performed
+
+Project repository
+    = what this project currently knows and requires
+```
+
+That separation is the main architectural change in this version of Research-Agent.
