@@ -9,7 +9,10 @@ Current packages:
 - `bootstrap-research-project`
 - `define-research-task`
 - `transcribe-research-evidence`
+- `review-mathematical-result`
+- `restructure-research-roadmap`
 - `complete-research-task`
 - `validate-research-project`
+- `synthesize-research-project`
 
 Do not combine all Skill directories into one Skill archive. Each package has its own `SKILL.md` entrypoint and UI metadata.
