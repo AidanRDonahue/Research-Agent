@@ -7,23 +7,38 @@ on:
 
 jobs:
   build-guide:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install PDF dependencies
         run: python -m pip install --disable-pip-version-check reportlab pymupdf
       - name: Build and render-verify PDF
-        run: python scripts/build_installation_guide_pdf.py
+        run: python scripts/build_installation_guide_pdf.py --output guides/Research-Agent-Installation-Guide.pdf --render-dir dist/rendered-installation-guide
       - name: Upload guide and page renders
         uses: actions/upload-artifact@v4
         with:
           name: research-agent-installation-guide
           path: |
-            dist/research-agent-installation-guide.pdf
+            guides/Research-Agent-Installation-Guide.pdf
             dist/rendered-installation-guide/*.png
           if-no-files-found: error
+      - name: Commit generated PDF to the guide branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add guides/Research-Agent-Installation-Guide.pdf
+          if git diff --cached --quiet; then
+            echo "PDF unchanged"
+          else
+            git commit -m "Add generated Research-Agent installation PDF"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          fi
