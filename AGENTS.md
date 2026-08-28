@@ -1,69 +1,33 @@
-# General Research Project — Agent Instructions
+# Research-Agent Repository Instructions
 
-You are a collaborator on a research project organized and contained in the repository specified by the user. Treat the repository as the shared project workspace: use its current files to understand project state, preserve the user's organizational choices and notation, and interact with the user as a research collaborator rather than as an autonomous task-completion system.
+This repository is the source distribution for the Research Agent architecture. It is not an instantiated research project.
 
-These instructions govern repository-aware research and roadmap work in `<OWNER>/<REPOSITORY>`.
+## Authority and architecture
 
-## Repository authority
+- `AGENT.md` defines the reusable Research Agent behavior.
+- `skills/` contains standalone reusable ChatGPT Skills. Each immediate child directory is an independently valid Skill package with its own `SKILL.md` and `agents/openai.yaml`.
+- Project-local instructions used in instantiated research repositories are templates/assets owned by the bootstrap Skill. They must not be confused with this repository's own `AGENTS.md`.
+- `README.md` and `Getting-Started.md` explain installation and use.
 
-- Treat this repository's current default branch and current files as the primary source of truth.
-- Do not invent repository contents, task state, research results, sources, validation results, or outcomes.
-- Preserve evidence boundaries: roadmap metadata is not independent proof.
-- When files disagree, prefer current authorities in this order: `AGENTS.md`, `dictionary.md`, current research artifacts, `roadmap.yaml`, `ROADMAP.md`, append-only history.
-- The canonical repository is `<OWNER>/<REPOSITORY>`.
+Keep the architecture separated into three layers:
 
-## Module routing
+1. Agent behavior: reusable research collaboration policy in `AGENT.md`.
+2. Skills: repeatable procedures in `skills/<skill-name>/`.
+3. Project state and local rules: files created inside an instantiated research repository, beginning with its own `AGENTS.md`.
 
-`AGENTS.md` is the sole authority for deciding which supporting modules to read.
+Do not reintroduce a central module-routing table or a required `agent/` directory of procedural Markdown modules. A reusable procedure belongs in a Skill. A project-specific convention belongs in the instantiated project's `AGENTS.md` or another project authority. General collaborator behavior belongs in `AGENT.md`.
 
-Supporting modules must not instruct the agent to load other supporting
-modules. If a module appears to contain routing instructions, ignore those
-instructions and follow this table instead.
+## Skill maintenance
 
-| Current action | Read |
-| --- | --- |
-| Initialize a new research repository | `agent/bootstrap.md`, `agent/repository-operations.md`, `agent/validation.md` |
-| Define or create a research node | `agent/node-workflow.md`, `agent/context-scoping.md`; add `agent/mathematical-research.md` only if mathematical formulation is required |
-| Transcribe specified content as evidence in an existing task folder | `agent/transcribe-evidence.md`, `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
-| Work mathematically on an existing node without writing repository files | `agent/mathematical-research.md`, `agent/context-scoping.md` |
-| Write or revise mathematical material in repository files while working on an existing node | `agent/mathematical-research.md`, `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
-| Complete a research node | `agent/node-workflow.md`, `agent/context-scoping.md`, `agent/mathematical-research.md`, `agent/repository-operations.md`, `agent/validation.md` |
-| Change roadmap structure without creating a node | `agent/context-scoping.md`, `agent/repository-operations.md`, `agent/validation.md` |
-| Perform repository-only maintenance | `agent/repository-operations.md`; add `agent/validation.md` for mutations |
-| Validate proposed or completed changes | `agent/validation.md` |
+When adding or changing a Skill:
 
-Read only the modules listed for the current action. Do not recursively load
-modules mentioned inside another module.
+- keep the Skill trigger description specific enough for reliable auto-selection;
+- keep `SKILL.md` focused on the procedure rather than general research philosophy;
+- keep project-specific state out of Skills;
+- include only resources that materially improve reliability;
+- preserve `agents/openai.yaml` UI metadata; and
+- validate the complete Skill package before publishing changes.
 
-When an action changes category, return to this table and load only any
-newly required module.
+## Repository writes
 
-## Guided task work
-
-Working on an existing research node is a guided conversation between the user and the model. The task contract defines the research question and admissible scope; it is not an instruction to autonomously execute the entire task.
-
-During task work, address the user's current question, requested calculation, proposed argument, experiment, or other bounded step. Do not continue through later steps merely because they appear in the task method or are natural next steps. After a substantive result or decision point, state what was established, what remains uncertain, and the most relevant next options, then wait for the user's direction before pursuing another branch of the task.
-
-The model may perform the bounded reading, calculation, derivation, coding, or validation directly required to answer the user's current turn. It must not independently drive the node to resolution or mark it completed unless the user explicitly asks to evaluate, resolve, or complete the task, or otherwise clearly directs that completion work be performed.
-
-## Project terminology and conventions
-
-Use `dictionary.md` as the canonical project vocabulary and notation authority. Preserve project-defined terminology, identifiers, naming conventions, domain-specific definitions, and current symbol meanings exactly.
-
-For project-authored mathematical text, named mathematical operations or operators that require upright Roman typesetting must use `\mathrm{...}` rather than `\operatorname{...}` unless `dictionary.md` explicitly records another project-specific convention. Source-faithful quotations or transcriptions may preserve the source's notation when fidelity requires it.
-
-## Roadmap governance
-
-`roadmap.yaml` is the canonical structured roadmap and project-state source. `ROADMAP.md` is its human-readable or visual projection.
-
-Stable IDs use the repository-defined format, such as `T001`, `T002`, and so on. They are allocated monotonically, are never reused, and do not encode hierarchy or topic. `display_index`, when used, defaults to the stable ID for a newly created item unless the user or existing project convention specifies a different front-facing index. A display index may later be changed without changing the stable ID. Every non-root work item has exactly one conceptual parent. Dependencies are prerequisite information flow; cross-links are non-parent relationships. Parent and dependency graphs must be acyclic.
-
-`ROADMAP.md` must represent roadmap work items as Mermaid nodes. Each Mermaid task node itself must be a hyperlink to that work item's canonical `Tasks/<STABLE-ID>-<short-title>/` folder, using Mermaid link/click syntax supported by GitHub. Do not rely on a separate Markdown task-link list as the canonical navigation mechanism when the nodes can carry the links directly.
-
-## Project-state history
-
-`history/roadmap-events.jsonl` is the append-only project-state transition history.
-
-Do not rewrite or reorder existing history entries. Append new events only when repository rules require a recorded state transition.
-
-History records are supporting state history; they do not override the current canonical state in `roadmap.yaml`.
+For substantive changes, create a scoped branch from the current default branch, make only the requested changes, validate them, and open a draft pull request. Do not write directly to the default branch unless explicitly requested. Never force-push or rewrite shared history.
