@@ -16,6 +16,7 @@ Build a coherent exposition from established project results without rewriting t
    - Read the canonical roadmap and identify the tasks relevant to the requested synthesis scope.
    - Read the relevant completed `resolution.md` files, declared dependencies, and cross-links.
    - Read task-local evidence only when needed to verify a synthesis claim, resolve an ambiguity, or understand a dependency.
+   - When project-global background is needed, load it from the location declared by the current project. In the standard current Research-Agent schema this is `Tasks/T001-<root-slug>/Background/`, not a separate top-level `Background/` directory.
 
 2. Define the synthesis boundary.
    - Identify the overarching question or theme being synthesized.
@@ -63,6 +64,7 @@ Build a coherent exposition from established project results without rewriting t
 9. Mutate project state only when requested.
    - If the user asks only for an outline or synthesis analysis, do not modify roadmap, task status, or history.
    - If the user asks to save a synthesis artifact, use the project-prescribed location or obtain the necessary destination from existing project conventions.
+   - If saving or synchronizing `ROADMAP.md` as part of an explicitly requested mutation, preserve the project's node-link convention; in the standard current Research-Agent schema every Mermaid task node links to its canonical GitHub task folder.
    - Validate references and any changed project files before publication.
 
 ## Default synthesis output
