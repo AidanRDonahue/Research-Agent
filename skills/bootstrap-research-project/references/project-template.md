@@ -15,9 +15,9 @@ Use this reference when bootstrapping a target repository. Replace angle-bracket
 |-- Tasks/
 |   |-- README.md
 |   `-- T001-<root-slug>/
+|       |-- Background/
 |       |-- task-graph.md
 |       `-- resolution.md
-|-- Background/
 |-- templates/
 |   |-- task-graph.md
 |   `-- resolution.md
@@ -38,12 +38,13 @@ At minimum record:
 - authority order: `AGENTS.md`, `dictionary.md`, current research artifacts, `roadmap.yaml`, `ROADMAP.md`, append-only history;
 - `dictionary.md` is the notation/terminology authority;
 - `roadmap.yaml` is canonical structured roadmap state;
-- `ROADMAP.md` is its Mermaid projection with task nodes linking to canonical task folders;
+- `ROADMAP.md` is its Mermaid projection, and every task node includes a clickable hyperlink to the task's canonical GitHub folder;
 - node-scoped context normally includes only the current task, its parent, declared dependencies, required cross-links, and directly relevant task-local evidence;
 - every task has exactly one canonical `Tasks/<STABLE-ID>-<slug>/` folder containing `task-graph.md` and a pending-or-completed `resolution.md`;
+- `Tasks/T001-<root-slug>/Background/` is the canonical location for project-global background material; do not create a separate top-level `Background/` directory;
 - stable IDs are monotone and never reused; new `display_index` values default to the stable ID unless the user or project specifies otherwise;
 - every non-root task has exactly one conceptual parent and parent/dependency graphs are acyclic;
-- task evidence remains task-local unless it genuinely functions as shared `Background/` material;
+- task evidence remains task-local unless it genuinely functions as project-global background, in which case it belongs under T001's `Background/` directory;
 - ordinary task work is user-directed and does not authorize autonomous completion;
 - project-authored mathematical operations use `\mathrm{...}` rather than `\operatorname{...}` unless the dictionary records another convention;
 - `research-agent.lock.json`, when present, records external toolchain compatibility and never overrides project-local research authority; and
@@ -66,6 +67,8 @@ The lock is deployment/compatibility metadata. It does not change the authority 
 ## Root task
 
 Create `T001` for the overarching research question. It may remain unresolved while child tasks are defined.
+
+Create `Tasks/T001-<root-slug>/Background/` for material whose role is genuinely global to the research project, including supplied papers, common reference notes, or shared foundations that are not specific to a child task. Global background remains source/background material rather than established project results unless separately supported by research evidence.
 
 A new task folder uses the project template for `task-graph.md` and `resolution.md`. The root `resolution.md` begins with an explicit pending notice and must not imply that the overarching question is solved.
 
@@ -90,9 +93,20 @@ A `task-graph.md` should record:
 
 ## Roadmap baseline
 
-`roadmap.yaml` is the canonical structured state. `ROADMAP.md` should be only the human-readable/visual projection required by the project, normally a Mermaid graph whose task nodes link directly to canonical task folders.
+`roadmap.yaml` is the canonical structured state. `ROADMAP.md` should be only the human-readable/visual projection required by the project, normally a Mermaid graph.
 
-Do not prewrite future branches. Initialize only `T001` unless the user has explicitly authorized additional tasks.
+Every Mermaid task node must be clickable and link to that task's canonical GitHub folder. Use Mermaid `click` directives with absolute GitHub URLs derived from the target repository and its default branch, for example:
+
+```mermaid
+graph TD
+    T001["T001: Root question"]
+    T002["T002: Child task"]
+    T001 --> T002
+    click T001 "https://github.com/<OWNER>/<REPOSITORY>/tree/<DEFAULT-BRANCH>/Tasks/T001-<root-slug>" "Open T001"
+    click T002 "https://github.com/<OWNER>/<REPOSITORY>/tree/<DEFAULT-BRANCH>/Tasks/T002-<child-slug>" "Open T002"
+```
+
+Do not leave any task node without its corresponding `click` directive. Do not prewrite future branches. Initialize only `T001` unless the user has explicitly authorized additional tasks.
 
 ## Validation baseline
 
@@ -100,6 +114,8 @@ Create `checks/project-system-checklist.md` covering at least:
 
 - required files/directories;
 - roadmap/task agreement;
+- every Mermaid roadmap task node has a valid GitHub hyperlink to its canonical task folder;
+- `Tasks/T001-<root-slug>/Background/` is the canonical project-global background location and no separate top-level `Background/` is introduced;
 - unique monotone stable IDs;
 - parent/dependency validity and acyclicity;
 - one canonical folder per task;
