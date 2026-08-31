@@ -49,10 +49,10 @@ When the user authorizes creation:
 3. Create exactly one canonical `Tasks/<STABLE-ID>-<slug>/` folder.
 4. Populate `task-graph.md` from the current project template.
 5. Create or copy `resolution.md` with an explicit pending notice.
-6. Put supplied task-specific sources or evidence in that same task folder.
-7. Synchronize `roadmap.yaml` and `ROADMAP.md`.
+6. Put supplied task-specific sources or evidence in that same task folder. If material is genuinely project-global rather than task-specific, store it under the root task's canonical `Tasks/T001-<root-slug>/Background/` location instead of creating a top-level `Background/` directory.
+7. Synchronize `roadmap.yaml` and `ROADMAP.md`. Preserve the project convention that every Mermaid task node has a `click` directive linking to its canonical GitHub task folder; add the hyperlink for the newly created node.
 8. Append project history only when required by the current project rules.
-9. Validate the structural change before publishing it.
+9. Validate the structural change before publishing it, including the new roadmap node's GitHub link and background-location invariant when applicable.
 10. Use a scoped branch and reviewable pull request for substantive mutations unless the user explicitly authorizes another write path.
 
 ## Boundaries
