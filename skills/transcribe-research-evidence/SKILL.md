@@ -10,7 +10,7 @@ Treat transcription as a preservation action, not a research or completion actio
 ## Required target
 
 1. Read the target project's current `AGENTS.md`.
-2. Resolve and verify the existing canonical task folder from the user-supplied task ID or path.
+2. Resolve and verify the existing canonical task folder from the user-supplied task ID or path. If the material is genuinely project-global background rather than task-specific evidence, use the root task's canonical `Tasks/T001-<root-slug>/Background/` location; do not create or use a separate top-level `Background/` directory.
 3. Require the content to record and a destination Markdown filename or relative path. If the user did not provide a filename and project rules do not define one, ask for the filename rather than inventing a canonical evidence name.
 4. Do not create a new task merely to satisfy a transcription request.
 

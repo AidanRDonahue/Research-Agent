@@ -36,10 +36,11 @@ When completion is supported:
 4. For inconclusive outcomes, state the exact obstruction and the strongest established partial result.
 5. Update `task-graph.md` so the task-local result-dependency graph reflects the actual evidence path to the conclusion.
 6. Record completion metadata and keep lifecycle status separate from scientific or technical outcome.
-7. Synchronize `roadmap.yaml` and `ROADMAP.md`.
-8. Append required history without rewriting prior history entries.
-9. Run the strongest applicable project validation and post-write review.
-10. Publish through the repository's required branch/review workflow.
+7. Synchronize `roadmap.yaml` and `ROADMAP.md`, preserving a `click` directive for every Mermaid task node that links to that task's canonical GitHub folder.
+8. Preserve `Tasks/T001-<root-slug>/Background/` as the canonical project-global background location; completion does not authorize relocating shared material to a top-level `Background/` directory.
+9. Append required history without rewriting prior history entries.
+10. Run the strongest applicable project validation and post-write review, including roadmap-link and global-background invariants.
+11. Publish through the repository's required branch/review workflow.
 
 ## Boundaries
 

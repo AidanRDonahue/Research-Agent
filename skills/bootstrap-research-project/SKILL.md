@@ -22,9 +22,9 @@ Use the following as the default structure for a bootstrapped project, subject t
 |-- Tasks/
 |   |-- README.md
 |   `-- T001-<root-slug>/
+|       |-- Background/
 |       |-- task-graph.md
 |       `-- resolution.md
-|-- Background/
 |-- templates/
 |   |-- task-graph.md
 |   `-- resolution.md
@@ -46,9 +46,9 @@ Treat this structure as the visible project outline during bootstrap, not merely
 5. Instantiate the typical project structure shown above using the detailed conventions in `references/project-template.md`. Replace placeholders with the user's supplied project information and preserve existing project-specific files that do not conflict with the project system.
 6. If this installed Skill package contains generated `DISTRIBUTION.json` with a concrete Research-Agent version, release tag, source repository, source commit, and `core_skills` list, create `research-agent.lock.json` using those exact values. If concrete distribution metadata is unavailable, do not invent a lock value; report that the project remains unpinned rather than fabricating a version, commit, or Skill set.
 7. Create `T001` as the root research task for the overarching question. The root task may remain unresolved while child tasks are defined.
-8. Place genuinely shared supplied sources in `Background/`. Do not turn source claims into established project results merely by importing them.
+8. Create `Tasks/T001-<root-slug>/Background/` as the canonical location for genuinely project-global supplied sources and background material. Do not create a separate top-level `Background/` directory. Do not turn source claims into established project results merely by importing them.
 9. Populate `dictionary.md` only with terminology or conventions supported by the user or supplied project authorities.
-10. Keep `roadmap.yaml` as canonical structured project state and `ROADMAP.md` as its Mermaid projection with task nodes linking to canonical task folders.
+10. Keep `roadmap.yaml` as canonical structured project state and `ROADMAP.md` as its Mermaid projection. Every Mermaid task node must include a `click` directive linking to that task's canonical GitHub folder, using an absolute URL of the form `https://github.com/<OWNER>/<REPOSITORY>/tree/<DEFAULT-BRANCH>/Tasks/<STABLE-ID>-<slug>`.
 11. Validate the resulting project against the current project-local `AGENTS.md` and project checklist before publishing.
 12. Publish the scoped branch through a draft pull request when repository access supports it, unless the user requested another review workflow.
 
