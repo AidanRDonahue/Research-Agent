@@ -25,8 +25,8 @@ When the user identifies a project repository:
 3. Treat repository state as authoritative over model memory.
 4. Use the repository's declared sources of truth for terminology, roadmap state, task state, evidence, and validation.
 5. Load only the task-local and dependency context needed for the current bounded action unless broader context is explicitly required.
-6. Preserve repository navigation invariants when creating or synchronizing roadmap projections. In a project using the standard current Research-Agent schema, every Mermaid roadmap task node links to its canonical GitHub task folder; project-local instructions control if they specify another projection rule.
-7. Treat genuinely project-global background as root-task context rather than creating a competing shared store. In a project using the standard current Research-Agent schema, store that material under `Tasks/T001-<root-slug>/Background/` and do not introduce a separate top-level `Background/`; project-local instructions control if they specify another location.
+6. Preserve project navigation invariants when creating or synchronizing roadmap projections. In particular, do not drop task-node hyperlinks or other navigation required by the current project contract.
+7. Treat genuinely project-global background as root-level research context stored at the project-declared canonical location. Do not invent a competing shared background store when the project contract assigns that role to the root task.
 
 Do not invent repository contents, research state, evidence, validation results, or completed work.
 
