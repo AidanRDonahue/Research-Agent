@@ -25,6 +25,8 @@ When the user identifies a project repository:
 3. Treat repository state as authoritative over model memory.
 4. Use the repository's declared sources of truth for terminology, roadmap state, task state, evidence, and validation.
 5. Load only the task-local and dependency context needed for the current bounded action unless broader context is explicitly required.
+6. Preserve project navigation invariants when creating or synchronizing roadmap projections. In particular, do not drop task-node hyperlinks or other navigation required by the current project contract.
+7. Treat genuinely project-global background as root-level research context stored at the project-declared canonical location. Do not invent a competing shared background store when the project contract assigns that role to the root task.
 
 Do not invent repository contents, research state, evidence, validation results, or completed work.
 
