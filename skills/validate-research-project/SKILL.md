@@ -13,10 +13,11 @@ Validate against the target repository's current authorities rather than a remem
 2. Read `checks/project-system-checklist.md` and any repository-specific validators or CI instructions it names.
 3. Inspect only enough repository state to evaluate the requested validation scope, expanding to project-wide checks when the user requests a full audit or when structural invariants require it.
 4. Apply the checklist in `references/validation-checklist.md` only where it is consistent with current project-local instructions. Project-local rules control conflicts.
-5. Run available deterministic validators or tests when applicable.
-6. For mathematical material written or revised in the validated change, audit statement/proof consistency, notation, assumptions, quantifiers, edge cases, and dependence on earlier results.
-7. For proposed new mathematical results, assess whether they appear to be standard consequences, routine corollaries, or reformulations rather than treating absence from the repository as evidence of novelty.
-8. Report failures, warnings, uncertainty, and validation limitations explicitly.
+5. When the project follows the standard current Research-Agent schema, explicitly verify that every Mermaid task node in `ROADMAP.md` links to its canonical GitHub task folder and that project-global background is stored under `Tasks/T001-<root-slug>/Background/` rather than a separate top-level `Background/` directory.
+6. Run available deterministic validators or tests when applicable.
+7. For mathematical material written or revised in the validated change, audit statement/proof consistency, notation, assumptions, quantifiers, edge cases, and dependence on earlier results.
+8. For proposed new mathematical results, assess whether they appear to be standard consequences, routine corollaries, or reformulations rather than treating absence from the repository as evidence of novelty.
+9. Report failures, warnings, uncertainty, and validation limitations explicitly.
 
 ## Repair boundary
 
