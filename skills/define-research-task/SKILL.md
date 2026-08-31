@@ -1,6 +1,6 @@
 ---
 name: define-research-task
-description: Define and publish a new bounded research task in an existing Research-Agent project. Use when the user asks to define, create, add, or branch a research task/node. Conduct guided intake before writing, then create the canonical task folder, task contract, pending resolution, roadmap updates, and required history without autonomously solving the task.
+description: Define and publish a new bounded research task in an existing Research-Agent project. Use when the user asks to define, create, add, or branch a research task/node. Conduct guided intake before writing, explicitly ask whether the new roadmap task is a root node or a child of another node, then create the canonical task folder, task contract, pending resolution, roadmap updates, and required history without autonomously solving the task.
 ---
 
 # Define Research Task
@@ -21,12 +21,19 @@ Begin with:
 
 > What concrete action and bounded target should this task have?
 
+After the target is clear, explicitly ask:
+
+> Should this be a root roadmap node, or a child of another roadmap node?
+
+If the user chooses a child node, ask which existing roadmap node is its conceptual parent. Do not choose a conceptual parent implicitly. `T001`, the central research question, is not a roadmap parent; a task that would otherwise attach directly to the central question should be classified as a root roadmap node.
+
 Gather one precise item at a time until the following are clear enough to publish without inventing research decisions:
 
 - action-oriented title;
 - type and initial lifecycle status;
-- exactly one conceptual parent unless the task is the root;
-- relation to parent and effect on parent;
+- roadmap role: root node or child node;
+- conceptual parent only when the user chooses a child node;
+- relation to parent and effect on parent only when a conceptual parent exists;
 - uncertainty reduced or question answered;
 - declared dependencies and required cross-links;
 - objective;
@@ -47,12 +54,12 @@ When the user authorizes creation:
 1. Allocate the next unused stable ID according to project rules. Do not renumber existing IDs.
 2. Default `display_index` to the stable ID unless the project or user specifies another value.
 3. Create exactly one canonical `Tasks/<STABLE-ID>-<slug>/` folder.
-4. Populate `task-graph.md` from the current project template.
+4. Populate `task-graph.md` from the current project template, recording root/child role and recording a conceptual parent only for a child node.
 5. Create or copy `resolution.md` with an explicit pending notice.
-6. Put supplied task-specific sources or evidence in that same task folder.
-7. Synchronize `roadmap.yaml` and `ROADMAP.md`.
+6. Put supplied task-specific sources or evidence in that same task folder. Put genuinely global background material in the canonical `T001` folder instead.
+7. Synchronize `roadmap.yaml` and `ROADMAP.md`. Keep `T001` outside the Mermaid graph and make the new Mermaid node a clickable hyperlink to its canonical GitHub task folder.
 8. Append project history only when required by the current project rules.
-9. Validate the structural change before publishing it.
+9. Validate the structural change before publishing it, including root/child classification, parent validity when applicable, Mermaid exclusion of `T001`, and the new node's GitHub hyperlink.
 10. Use a scoped branch and reviewable pull request for substantive mutations unless the user explicitly authorizes another write path.
 
 ## Boundaries
@@ -60,4 +67,5 @@ When the user authorizes creation:
 - Defining a task does not authorize solving it.
 - Do not prepopulate evidence with conclusions that have not been established.
 - Do not create extra sibling or successor tasks merely because they appear useful.
+- Do not assign a conceptual parent unless the user chose child-node status.
 - Keep the roadmap a map of actual research decisions, not a prewritten solution plan.

@@ -10,7 +10,7 @@ Use this workflow only for an explicit completion request. Evidence appearing su
 ## Establish authority and scope
 
 1. Read the project's current `AGENTS.md` and `dictionary.md`.
-2. Read the target `task-graph.md`, current `resolution.md`, declared parent, declared dependencies, required cross-links, and the task-local evidence needed to evaluate the original question.
+2. Read the target `task-graph.md`, current `resolution.md`, its declared conceptual parent when it is a child node, declared dependencies, required cross-links, and the task-local evidence needed to evaluate the original question.
 3. Preserve the exact original task question and scope. Do not silently weaken or rewrite it to fit the available result.
 
 ## Completion gate
@@ -36,7 +36,7 @@ When completion is supported:
 4. For inconclusive outcomes, state the exact obstruction and the strongest established partial result.
 5. Update `task-graph.md` so the task-local result-dependency graph reflects the actual evidence path to the conclusion.
 6. Record completion metadata and keep lifecycle status separate from scientific or technical outcome.
-7. Synchronize `roadmap.yaml` and `ROADMAP.md`.
+7. Synchronize `roadmap.yaml` and `ROADMAP.md`, preserving the project's root/child classification, keeping `T001` out of the Mermaid graph, and keeping Mermaid task-node hyperlinks synchronized with canonical GitHub task folders.
 8. Append required history without rewriting prior history entries.
 9. Run the strongest applicable project validation and post-write review.
 10. Publish through the repository's required branch/review workflow.
