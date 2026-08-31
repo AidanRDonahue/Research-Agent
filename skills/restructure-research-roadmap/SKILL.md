@@ -47,6 +47,8 @@ Change the structure of an existing research map while preserving scientific mea
 6. Apply the smallest coherent repository change.
    - Use the project's canonical roadmap source as the state authority.
    - Synchronize any required Mermaid or human-readable projection.
+   - Preserve the project convention that every Mermaid task node has a `click` directive linking to its canonical GitHub task folder; add, remove, or update link directives whenever task nodes change.
+   - Preserve `Tasks/T001-<root-slug>/Background/` as the canonical project-global background location and do not introduce a separate top-level `Background/` directory.
    - Update affected task contracts only where their scope or relationships actually changed.
    - Create new task folders only when the restructuring genuinely introduces new tasks and the user has authorized that outcome.
    - Append history only as required by the project contract; never rewrite append-only history.
@@ -57,6 +59,8 @@ Change the structure of an existing research map while preserving scientific mea
    - Verify parent and dependency graphs are acyclic.
    - Verify dependency and cross-link targets exist.
    - Verify roadmap/task agreement on title, scope, parent, dependencies, status, and deliverable paths where applicable.
+   - Verify every Mermaid roadmap task node links to the canonical GitHub folder for that task.
+   - Verify project-global background remains under T001's `Background/` directory.
    - Verify every moved or split evidence reference still points to an existing artifact and has a truthful evidentiary role.
    - Run project validators or CI when available and applicable.
 
