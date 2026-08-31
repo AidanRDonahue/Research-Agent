@@ -9,7 +9,8 @@ Use this as a reusable baseline when the current project `AGENTS.md` does not re
 - `AGENTS.md` defines project-local authority and rules without depending on a manual procedural module-routing table.
 - `dictionary.md` is the canonical terminology and notation authority.
 - `roadmap.yaml` is the canonical structured roadmap state.
-- `ROADMAP.md` is a valid projection of `roadmap.yaml` and task nodes link to canonical task folders.
+- `ROADMAP.md` is a valid projection of `roadmap.yaml`; every Mermaid task node has a `click` directive linking to that task's canonical GitHub folder.
+- `Tasks/T001-<root-slug>/Background/` is the canonical location for project-global background material, and no separate top-level `Background/` directory is used.
 - `templates/`, `history/`, and `checks/` contain the project-defined canonical files.
 
 ## Roadmap integrity
@@ -20,11 +21,13 @@ Use this as a reusable baseline when the current project `AGENTS.md` does not re
 - Parent and dependency graphs are acyclic.
 - Dependency and cross-link targets exist and use stable IDs.
 - Roadmap folder paths match actual canonical task folders.
+- Every Mermaid roadmap task node links to the same canonical task folder recorded by project state, using an absolute GitHub URL for the project repository and default branch.
 
 ## Task integrity
 
 - Every roadmap item has exactly one canonical `Tasks/<ID>-<slug>/` folder.
 - Every task folder contains `task-graph.md` and `resolution.md`.
+- The root task folder contains `Background/` for genuinely project-global background material.
 - Task contracts contain the project-required metadata, objective, scope, method, stopping rules, outcome branches, assumptions, conventions, validation, and result graph.
 - Result-graph nodes and edges describe actual evidence/result dependencies rather than generic workflow steps.
 - Every material evidence file/result required by a completed resolution lies on an explicit evidentiary path to the conclusion when project rules require that representation.
@@ -34,7 +37,7 @@ Use this as a reusable baseline when the current project `AGENTS.md` does not re
 ## Evidence and history
 
 - Referenced evidence exists at the recorded path.
-- Task-specific evidence remains task-local unless it genuinely functions as shared `Background/` material.
+- Task-specific evidence remains task-local unless it genuinely functions as project-global background, in which case it is stored under T001's `Background/` directory.
 - Roadmap metadata is not treated as independent proof.
 - `history/roadmap-events.jsonl` remains valid append-only JSONL when the project uses it.
 
