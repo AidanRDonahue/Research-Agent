@@ -3,14 +3,15 @@
   "schema_version": 1,
   "distribution": {
     "repository": "AidanRDonahue/Research-Agent",
-    "version": "0.1.0",
-    "release_tag": "v0.1.0",
+    "version": "0.2.0",
+    "release_tag": "v0.2.0",
     "source_commit": "<SOURCE_COMMIT_FROM_RELEASE_MANIFEST>"
   },
   "required_skills": [
     "bootstrap-research-project",
     "complete-research-task",
     "define-research-task",
+    "paper-digest",
     "restructure-research-roadmap",
     "review-mathematical-result",
     "synthesize-research-project",

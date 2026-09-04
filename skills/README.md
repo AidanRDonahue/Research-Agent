@@ -8,6 +8,7 @@ Current packages:
 
 - `bootstrap-research-project`
 - `define-research-task`
+- `paper-digest`
 - `transcribe-research-evidence`
 - `review-mathematical-result`
 - `restructure-research-roadmap`
