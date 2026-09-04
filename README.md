@@ -5,10 +5,10 @@ Research Agent is a framework for guided work on long, branching research questi
 The architecture separates three runtime concerns:
 
 1. **Agent behavior** — how the research collaborator should behave.
-2. **Skills** — repeatable procedures such as defining a task or transcribing evidence.
+2. **Skills** — repeatable procedures such as defining a task, digesting a paper, or transcribing evidence.
 3. **Project repository** — local rules, state, notation, roadmap, tasks, evidence, and history for one research project.
 
-A versioned distribution layer now makes the reusable Agent/Skill toolchain reproducible without mixing it into project state.
+A versioned distribution layer makes the reusable Agent/Skill toolchain reproducible without mixing it into project state.
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the design and [`USING_IN_YOUR_PROJECT.md`](USING_IN_YOUR_PROJECT.md) for the complete consumer tutorial.
 
@@ -63,13 +63,7 @@ The lock is not research authority. It never overrides the project's `AGENTS.md`
 
 A newer Research-Agent release should not silently update the lock. Compare intentionally, test the new toolchain, reconcile project-local differences, and then update the pin.
 
-Use [`templates/research-agent.lock.example.json`](templates/research-agent.lock.example.json) when a bootstrap environment cannot read generated package metadata. A local Research-Agent checkout can verify a pin with:
-
-```bash
-python scripts/check_project_compatibility.py \
-  /path/to/project/research-agent.lock.json \
-  --distribution /path/to/research-agent-distribution.json
-```
+Use [`templates/research-agent.lock.example.json`](templates/research-agent.lock.example.json) when a bootstrap environment cannot read generated package metadata.
 
 ## Core research behavior
 
@@ -98,23 +92,18 @@ Creating a task does not authorize the model to execute every step in the task p
 ```text
 Research-Agent/
 |-- AGENTS.md
-|   `-- instructions for maintaining this source repository
 |-- RESEARCH_AGENT.md
-|   `-- reusable Research Agent behavior
 |-- ARCHITECTURE.md
-|   `-- Agent / Skill / project separation
 |-- VERSION
 |-- skills-manifest.json
 |-- RELEASES.md
 |-- USING_IN_YOUR_PROJECT.md
 |-- scripts/
-|   |-- package_skills.py
-|   `-- check_project_compatibility.py
 |-- templates/
-|   `-- research-agent.lock.example.json
 |-- skills/
 |   |-- bootstrap-research-project/
 |   |-- define-research-task/
+|   |-- paper-digest/
 |   |-- transcribe-research-evidence/
 |   |-- review-mathematical-result/
 |   |-- restructure-research-roadmap/
@@ -139,6 +128,7 @@ Each immediate child of [`skills/`](skills/) is a standalone ChatGPT Skill:
 
 - **`bootstrap-research-project`** initializes a structured research repository and records a concrete Research-Agent compatibility lock when packaged distribution metadata is available.
 - **`define-research-task`** conducts guided intake and publishes a new bounded task without solving it.
+- **`paper-digest`** turns one paper into a nested Markdown background package with source coverage, inquiry-tree navigation, typed claims/evidence, theorem/proof structure, and relations while keeping paper-derived material distinct from established project results.
 - **`transcribe-research-evidence`** preserves specified content faithfully as task-local Markdown evidence.
 - **`review-mathematical-result`** adversarially audits a theorem, proof, derivation, bound, or argument without automatically changing project state.
 - **`restructure-research-roadmap`** reorganizes task relationships while preserving identity, evidence, negative/inconclusive branches, and history.

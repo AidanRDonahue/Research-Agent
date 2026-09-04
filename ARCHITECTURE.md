@@ -4,7 +4,7 @@ The Research Agent is intentionally split into three runtime layers.
 
 ## 1. Agent
 
-`RESEARCH_AGENT.md` defines how the research collaborator behaves: user-directed work, bounded scope, evidence discipline, repository grounding, decision points, completion boundaries, and compatibility awareness.
+`RESEARCH_AGENT.md` defines how the research collaborator behaves: user-directed work, bounded scope, evidence discipline, repository grounding, task-completion boundaries, meaningful decision points, rigor, safe repository mutation defaults, and compatibility awareness.
 
 The Agent answers: **How should the collaborator behave?**
 
@@ -18,6 +18,7 @@ Current Skills:
 
 - `bootstrap-research-project`: initialize an empty or existing repository as a structured research project.
 - `define-research-task`: conduct task intake and publish a new bounded research task.
+- `paper-digest`: turn one paper into a nested Markdown background package with inquiry, claim/evidence, theorem/proof, relation, and coverage views.
 - `transcribe-research-evidence`: faithfully record specified content as task-local Markdown evidence.
 - `review-mathematical-result`: adversarially audit one mathematical claim, proof, derivation, or bound without changing project state.
 - `restructure-research-roadmap`: reorganize task relationships and roadmap structure while preserving stable identity and research history.
