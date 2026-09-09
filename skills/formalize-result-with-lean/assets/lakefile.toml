@@ -1,0 +1,6 @@
+name = "research-formalization"
+defaultTargets = ["ResearchFormalization"]
+
+[[lean_lib]]
+name = "ResearchFormalization"
+srcDir = "Formalization"

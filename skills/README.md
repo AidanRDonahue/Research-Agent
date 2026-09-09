@@ -10,6 +10,7 @@ Current packages:
 - `define-research-task`
 - `transcribe-research-evidence`
 - `review-mathematical-result`
+- `formalize-result-with-lean`
 - `restructure-research-roadmap`
 - `complete-research-task`
 - `validate-research-project`
