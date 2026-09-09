@@ -48,6 +48,8 @@ complete-research-task/
     skill.zip
 define-research-task/
     skill.zip
+formalize-result-with-lean/
+    skill.zip
 restructure-research-roadmap/
     skill.zip
 review-mathematical-result/
@@ -78,6 +80,7 @@ Install the independent `skill.zip` packages from the release bundle in ChatGPT'
 - `define-research-task`
 - `transcribe-research-evidence`
 - `review-mathematical-result`
+- `formalize-result-with-lean`
 - `restructure-research-roadmap`
 - `complete-research-task`
 - `validate-research-project`
@@ -175,6 +178,14 @@ To review mathematics:
 Review the current T002 classification lemma adversarially. Check hidden hypotheses and the exact proved scope.
 ```
 
+To formalize and machine-check one established result node:
+
+```text
+Formalize result R003 from T002 in Lean. Audit the translation against the exact source claim and record the Lean validation without changing task completion state.
+```
+
+The `formalize-result-with-lean` Skill can explicitly initialize an optional project-local `Formalization/` workspace when needed. Its mapping file and Lean proof status are validation artifacts, not replacements for Research-Agent research state.
+
 To preserve evidence:
 
 ```text
@@ -218,6 +229,7 @@ ChatGPT Skills library
 
 Your project repository
     project-local rules, terminology, tasks, evidence, roadmap, history
+    optional Lean formalization/validation artifacts when explicitly initialized
 ```
 
 Do not copy all of `skills/` into your project merely to make the project work. Vendoring is possible when you deliberately need a self-contained source snapshot, but the normal model is an external versioned toolchain plus a project lock.

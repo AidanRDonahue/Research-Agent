@@ -20,6 +20,7 @@ Current Skills:
 - `define-research-task`: conduct task intake and publish a new bounded research task.
 - `transcribe-research-evidence`: faithfully record specified content as task-local Markdown evidence.
 - `review-mathematical-result`: adversarially audit one mathematical claim, proof, derivation, or bound without changing project state.
+- `formalize-result-with-lean`: translate one bounded result node into Lean 4 and validate the mapped declaration while keeping translation fidelity distinct from kernel success.
 - `restructure-research-roadmap`: reorganize task relationships and roadmap structure while preserving stable identity and research history.
 - `complete-research-task`: evaluate and synthesize a task into its canonical resolution when completion is explicitly requested.
 - `validate-research-project`: audit project structure, roadmap/task consistency, evidence boundaries, and applicable mathematical writes.
@@ -28,6 +29,8 @@ Current Skills:
 ## 3. Project repository
 
 An instantiated project contains its own `AGENTS.md`, dictionary, roadmap, task folders, evidence, templates, history, and project-specific artifacts. It may also contain `research-agent.lock.json` to record the external Research-Agent toolchain version it was tested against.
+
+Projects that explicitly initialize Lean formalization may additionally contain a project-local `Formalization/` workspace, Lean/Lake toolchain files, task-local Lean validation reports, and a Lean validation checklist. Those artifacts validate mapped formal declarations; they do not replace the project's natural-language research authorities or lifecycle state.
 
 The project repository answers: **What is true here, and what local rules govern this project?**
 
