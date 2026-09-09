@@ -117,6 +117,7 @@ Research-Agent/
 |   |-- define-research-task/
 |   |-- transcribe-research-evidence/
 |   |-- review-mathematical-result/
+|   |-- formalize-result-with-lean/
 |   |-- restructure-research-roadmap/
 |   |-- complete-research-task/
 |   |-- validate-research-project/
@@ -141,6 +142,7 @@ Each immediate child of [`skills/`](skills/) is a standalone ChatGPT Skill:
 - **`define-research-task`** conducts guided intake and publishes a new bounded task without solving it.
 - **`transcribe-research-evidence`** preserves specified content faithfully as task-local Markdown evidence.
 - **`review-mathematical-result`** adversarially audits a theorem, proof, derivation, bound, or argument without automatically changing project state.
+- **`formalize-result-with-lean`** translates one bounded result node into Lean 4, audits translation fidelity and proof dependencies, and records an independent formal-validation verdict without changing research lifecycle state.
 - **`restructure-research-roadmap`** reorganizes task relationships while preserving identity, evidence, negative/inconclusive branches, and history.
 - **`complete-research-task`** runs only when completion is explicitly requested and writes the supported canonical resolution.
 - **`validate-research-project`** audits structure, roadmap/task consistency, evidence boundaries, history, terminology, and applicable mathematics.
@@ -153,6 +155,8 @@ Do not combine the entire `skills/` source directory into a single Skill archive
 An instantiated research repository gets its own `AGENTS.md`. The bootstrap Skill's project template defines the default local contract. That file answers which files are authoritative, how roadmap/task state works, what context may be loaded, what notation rules apply, and what validation must run.
 
 A project-local `AGENTS.md` should not manually route the model to procedural Markdown modules. Skills provide procedure selection; the project file provides local authority.
+
+The optional Lean layer created by `formalize-result-with-lean` remains project-local validation state. Its `Formalization/result-map.yaml` indexes result nodes to Lean declarations but never replaces the natural-language research authorities.
 
 ## Quick start
 

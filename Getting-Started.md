@@ -31,6 +31,7 @@ For the complete workflow, install the independently packaged Skills extracted f
 - `define-research-task`
 - `transcribe-research-evidence`
 - `review-mathematical-result`
+- `formalize-result-with-lean`
 - `restructure-research-roadmap`
 - `complete-research-task`
 - `validate-research-project`
@@ -143,6 +144,14 @@ When you want adversarial review:
 ```text
 Review the current T002 argument and look for gaps or hidden assumptions.
 ```
+
+When you want independent machine checking of a bounded result node and a Lean environment is available:
+
+```text
+Formalize result R003 from T002 in Lean and validate the translation. Do not change task completion state.
+```
+
+The Lean formalization layer is optional and is initialized only when explicitly requested. Its proof status does not replace the Research-Agent source claim or determine task lifecycle state.
 
 When the accumulated evidence appears sufficient, explicitly request completion:
 
